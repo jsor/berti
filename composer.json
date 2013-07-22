@@ -1,0 +1,50 @@
+{
+    "name": "berti/berti",
+    "description": "Generates documentations from the Markdown files in a Git(Hub) repository.",
+    "keywords": [
+        "documentation",
+        "generator",
+        "markdown"
+    ],
+    "homepage": "https://github.com/jsor/berti",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jan Sorgalla",
+            "email": "jsorgalla@googlemail.com",
+            "homepage": "http://sorgalla.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "symfony/console": "~2.3",
+        "symfony/finder": "~2.3",
+        "symfony/filesystem": "~2.3",
+        "pimple/pimple": "~1.0",
+        "knplabs/github-api": "~1.1",
+        "twig/twig": "~1.13",
+        "react/curry": "~1.0"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-0": {
+            "Berti": "src/"
+        },
+        "files": [
+            "src/Berti/container.php",
+            "src/Berti/document.php",
+            "src/Berti/github.php",
+            "src/Berti/twig.php",
+            "src/Berti/uri.php"
+        ]
+    },
+    "bin": [
+        "bin/berti"
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        }
+    }
+}

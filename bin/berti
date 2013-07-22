@@ -1,0 +1,31 @@
+#!/usr/bin/env php
+<?php
+
+use Symfony\Component\Console\Input\ArgvInput;
+
+set_time_limit(0);
+
+require __DIR__.'/../vendor/autoload.php';
+
+$container = Berti\container();
+
+$input = new ArgvInput();
+
+$workingDir = $input->getParameterOption(array('--working-dir', '-d'));
+if (is_dir($workingDir)) {
+    $oldWorkingDir = getcwd();
+    chdir($workingDir);
+}
+
+$configFile = $input->getParameterOption(array('--config', '-c'), getenv('BERTI_CONFIG') ?: './berti.php');
+if (is_file($configFile)) {
+    call_user_func(include $configFile, $container);
+}
+
+$exitCode = $container['console']($workingDir, $configFile);
+
+if (isset($oldWorkingDir)) {
+    chdir($oldWorkingDir);
+}
+
+exit($exitCode);
