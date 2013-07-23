@@ -17,7 +17,7 @@ class Application extends BaseApplication
     private $workingDir;
     private $configFile;
 
-    public function __construct(callable $commands = null)
+    public function __construct(array $commands = null)
     {
         $this->commands = $commands;
 
@@ -76,7 +76,7 @@ class Application extends BaseApplication
         $commands = parent::getDefaultCommands();
 
         if ($this->commands) {
-            $commands = array_merge($commands, call_user_func($this->commands, $this));
+            $commands = array_merge($commands, $this->commands);
         }
 
         return $commands;

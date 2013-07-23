@@ -94,14 +94,14 @@ function container(array $values = [])
         );
     });
 
-    $container['console.commands'] = $container->share($container->protect(function() use ($container) {
+    $container['console.commands'] = $container->share(function() use ($container) {
         return [
             new Console\Command\GenerateCommand(
                 $container['document.collector'],
                 $container['document.processor']
             ),
         ];
-    }));
+    });
     $container['console'] = $container->share(function() use ($container) {
         return new Console\Application(
             $container['console.commands']
