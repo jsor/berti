@@ -3,20 +3,20 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "3a44e3f79511e597c07ecb56f7157544",
+    "hash": "0c04218507d7ad8e353ce13ce2259862",
     "packages": [
         {
             "name": "henrikbjorn/lurker",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/henrikbjorn/Lurker.git",
-                "reference": "3e6911c8f11cee86cf31a24695aa9ed0f500eb20"
+                "reference": "1.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/henrikbjorn/Lurker/zipball/3e6911c8f11cee86cf31a24695aa9ed0f500eb20",
-                "reference": "3e6911c8f11cee86cf31a24695aa9ed0f500eb20",
+                "url": "https://api.github.com/repos/henrikbjorn/Lurker/zipball/1.0.0",
+                "reference": "1.0.0",
                 "shasum": ""
             },
             "require": {
@@ -64,7 +64,7 @@
                 "resource",
                 "watching"
             ],
-            "time": "2013-07-22 06:49:55"
+            "time": "2013-05-24 06:47:29"
         },
         {
             "name": "knplabs/github-api",
@@ -564,9 +564,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "henrikbjorn/lurker": 20
-    },
+    "stability-flags": [
+
+    ],
     "platform": {
         "php": ">=5.4.0"
     },
