@@ -100,9 +100,10 @@ function container(array $values = [])
                 $container['document.collector'],
                 $container['document.processor']
             ),
-            new Console\Command\WatchCommand([
-                'template.theme' => $container['template.theme']
-            ])
+            new Console\Command\WatchCommand(
+                $container['document.finder'],
+                $container['template.theme']
+            )
         ];
     });
     $container['console'] = $container->share(function() use ($container) {

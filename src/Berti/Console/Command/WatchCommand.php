@@ -14,11 +14,13 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class WatchCommand extends Command
 {
-    private $paths;
+    private $documentFinder;
+    private $themePath;
 
-    public function __construct(array $paths)
+    public function __construct(callable $documentFinder, $themePath = null)
     {
-        $this->paths = $paths;
+        $this->documentFinder = $documentFinder;
+        $this->themePath = $themePath;
         parent::__construct();
     }
 
@@ -58,30 +60,54 @@ EOF
         ];
         $input = new ArrayInput($arguments);
 
-        $paths = $this->paths + array('cwd' => getcwd());
+        $build = function ($file, $type) use ($command, $input, $output) {
+            $output->writeln('');
+            $output->writeln(sprintf(
+                '%s <info>%s</info>',
+                $file,
+                $this->translateTypeString($type)
+            ));
+            $output->writeln('');
 
-        foreach ($paths as $id => $path) {
-            if (!$path) {
-                continue;
-            }
+            $command->run($input, $output);
+        };
 
-            $watcher->track($id, $path);
+        $track = function($id, $path) use ($watcher, $build) {
+            $watcher->track($id, $path, FilesystemEvent::MODIFY | FilesystemEvent::DELETE);
+            $watcher->addListener($id, function (FilesystemEvent $event) use ($build) {
+                $build($event->getResource(), $event->getTypeString());
+            });
+        };
 
-            $watcher->addListener($id, function (FilesystemEvent $event) use ($buildDir, $command, $input, $output) {
-                if (0 === strpos($event->getResource(), $buildDir)) {
-                    return;
+        $documents = call_user_func(
+            $this->documentFinder,
+            getcwd()
+        );
+
+        foreach ($documents as $document) {
+            $track($document->getRelativePathname(), $document->getPathname());
+        }
+
+        $watcher->track('new', getcwd(), FilesystemEvent::CREATE);
+        $watcher->addListener('new', function (FilesystemEvent $event) use ($track, $build) {
+            $documents = call_user_func(
+                $this->documentFinder,
+                getcwd()
+            );
+
+            foreach ($documents as $document) {
+                if ($document->getPathname() !== (string) $event->getResource()) {
+                    continue;
                 }
 
-                $output->writeln('');
-                $output->writeln(sprintf(
-                    '%s <info>%s</info>',
-                    $event->getResource(),
-                    $this->translateTypeString($event->getTypeString())
-                ));
-                $output->writeln('');
+                $track($document->getRelativePathname(), $document->getPathname());
+                $build($event->getResource(), $event->getTypeString());
+                break;
+            }
+        });
 
-                $command->run($input, $output);
-            });
+        if ($this->themePath) {
+            $track('theme.path', $this->themePath);
         }
 
         $watcher->start();
