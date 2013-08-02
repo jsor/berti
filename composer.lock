@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "0c04218507d7ad8e353ce13ce2259862",
+    "hash": "a8ee1843eb49632a2443e0cce506c623",
     "packages": [
         {
             "name": "henrikbjorn/lurker",
@@ -168,6 +168,47 @@
                 "http client"
             ],
             "time": "2013-05-19 03:41:15"
+        },
+        {
+            "name": "kzykhys/ciconia",
+            "version": "v0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kzykhys/Ciconia.git",
+                "reference": "v0.1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kzykhys/Ciconia/zipball/v0.1.1",
+                "reference": "v0.1.1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">5.4.0",
+                "symfony/console": "2.3.x",
+                "symfony/options-resolver": "2.3.x"
+            },
+            "require-dev": {
+                "symfony/finder": "2.3.x"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kazuyuki Hayashi",
+                    "email": "hayashi@valnur.net"
+                }
+            ],
+            "description": "The Markdown parser for PHP5.4",
+            "time": "2013-08-02 12:52:31"
         },
         {
             "name": "pimple/pimple",
@@ -506,6 +547,58 @@
             "description": "Symfony Finder Component",
             "homepage": "http://symfony.com",
             "time": "2013-07-01 12:17:23"
+        },
+        {
+            "name": "symfony/options-resolver",
+            "version": "v2.3.2",
+            "target-dir": "Symfony/Component/OptionsResolver",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/OptionsResolver.git",
+                "reference": "v2.3.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/OptionsResolver/zipball/v2.3.2",
+                "reference": "v2.3.2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\OptionsResolver\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony OptionsResolver Component",
+            "homepage": "http://symfony.com",
+            "keywords": [
+                "config",
+                "configuration",
+                "options"
+            ],
+            "time": "2013-04-11 06:50:46"
         },
         {
             "name": "twig/twig",

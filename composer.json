@@ -24,7 +24,8 @@
         "knplabs/github-api": "~1.1",
         "twig/twig": "~1.13",
         "react/curry": "~1.0",
-        "henrikbjorn/lurker": "~1.0"
+        "henrikbjorn/lurker": "~1.0",
+        "kzykhys/ciconia": "~0.1"
     },
     "require-dev": {
     },

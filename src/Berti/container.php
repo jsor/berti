@@ -2,6 +2,8 @@
 
 namespace Berti;
 
+use Ciconia\Ciconia;
+use Ciconia\Extension\Gfm;
 use Github;
 use React\Curry;
 
@@ -49,14 +51,33 @@ function container(array $values = [])
     $container['github.client'] = $container->share(function () {
         return new Github\Client();
     });
-
-    $container['markdown.renderer'] = $container->share(function () use ($container) {
+    $container['github.client'] = $container->share(function () {
+        return new Github\Client();
+    });
+    $container['github.markdown.renderer'] = $container->share(function () use ($container) {
         return Curry\bind(
             'Berti\github_markdown_renderer',
             $container['github.client'],
             $container['github.repository']
         );
     });
+
+    $container['ciconia'] = $container->share(function () {
+        $ciconia = new Ciconia();
+        $ciconia->addExtension(new Gfm\FencedCodeBlockExtension());
+        $ciconia->addExtension(new Gfm\TaskListExtension());
+        $ciconia->addExtension(new Gfm\InlineStyleExtension());
+        $ciconia->addExtension(new Gfm\WhiteSpaceExtension());
+
+        return $ciconia;
+    });
+    $container['ciconia.markdown.renderer'] = $container->share(function () use ($container) {
+        return array($container['ciconia'], 'render');
+    });
+
+    $container['markdown.renderer'] = function () use ($container) {
+        return $container['github.markdown.renderer'];
+    };
 
     $container['document.finder'] = function () {
         return 'Berti\document_finder';
