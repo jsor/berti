@@ -72,7 +72,7 @@ function document_processor($markdownRenderer, $templateRenderer, $templateSelec
 function document_template_selector($defaultTemplate, array $templateMap, Document $document)
 {
     $outputFile = $document->output->getRelativePathname();
-    
+
     if (array_key_exists($outputFile, $templateMap)) {
         return $templateMap[$outputFile];
     } else {

@@ -13,11 +13,15 @@ class GenerateCommand extends Command
 {
     private $documentCollector;
     private $documentProcessor;
+    private $assetCollector;
+    private $assetProcessor;
 
-    public function __construct(callable $documentCollector, callable $documentProcessor)
+    public function __construct(callable $documentCollector, callable $documentProcessor, callable $assetCollector, callable $assetProcessor)
     {
         $this->documentCollector = $documentCollector;
         $this->documentProcessor = $documentProcessor;
+        $this->assetCollector = $assetCollector;
+        $this->assetProcessor = $assetProcessor;
 
         parent::__construct();
     }
@@ -62,6 +66,32 @@ EOF
 
         $output->writeln('Starting build');
 
+        $output->writeln('Processing assets...');
+
+        $assets = call_user_func(
+            $this->assetCollector,
+            getcwd(),
+            $buildDir
+        );
+
+        foreach ($assets as $asset) {
+            $output->write(sprintf(
+                '<comment>==> Processing %s -> %s</comment>...',
+                $asset->input->getRelativePathname(),
+                $asset->output->getRelativePathname()
+            ));
+
+            $asset = call_user_func($this->assetProcessor, $asset, $assets);
+
+            $filesystem->copy($asset->input->getPathname(), $asset->output->getPathname());
+
+            $output->writeln('<info>Done</info>');
+        }
+
+        $output->writeln('Done');
+
+        $output->writeln('Processing documents...');
+
         $documents = call_user_func(
             $this->documentCollector,
             getcwd(),
@@ -70,7 +100,7 @@ EOF
 
         foreach ($documents as $document) {
             $output->write(sprintf(
-                '<comment>==> Rendering %s -> %s</comment>...',
+                '<comment>==> Processing %s -> %s</comment>...',
                 $document->input->getRelativePathname(),
                 $document->output->getRelativePathname()
             ));
@@ -81,6 +111,8 @@ EOF
 
             $output->writeln('<info>Done</info>');
         }
+
+        $output->writeln('Done');
 
         $output->writeln('Build finished');
     }

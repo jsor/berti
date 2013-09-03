@@ -109,11 +109,32 @@ function container(array $values = [])
         );
     });
 
+    $container['asset.finder'] = function () {
+        return 'Berti\asset_finder';
+    };
+    $container['asset.collector'] = $container->share(function () use ($container) {
+        return Partial\bind(
+            'Berti\asset_collector',
+            $container['asset.finder']
+        );
+    });
+    $container['asset.filter'] = $container->protect(function ($asset, array $assetCollection) {
+        return $asset;
+    });
+    $container['asset.processor'] = $container->share(function () use ($container) {
+        return Partial\bind(
+            'Berti\asset_processor',
+            $container['asset.filter']
+        );
+    });
+
     $container['console.commands'] = $container->share(function () use ($container) {
         return [
             new Console\Command\GenerateCommand(
                 $container['document.collector'],
-                $container['document.processor']
+                $container['document.processor'],
+                $container['asset.collector'],
+                $container['asset.processor']
             ),
             new Console\Command\WatchCommand(
                 $container['document.finder'],

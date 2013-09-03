@@ -35,8 +35,10 @@
             "Berti": "src/"
         },
         "files": [
+            "src/Berti/assets.php",
             "src/Berti/container.php",
             "src/Berti/document.php",
+            "src/Berti/git.php",
             "src/Berti/github.php",
             "src/Berti/twig.php",
             "src/Berti/uri.php"
