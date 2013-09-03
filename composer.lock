@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "203e94f2bb9124086c36cc8fe195049c",
+    "hash": "fb59addbacde37a141c7267c402b2f04",
     "packages": [
         {
             "name": "henrikbjorn/lurker",
@@ -265,17 +265,17 @@
             "time": "2013-03-08 08:21:40"
         },
         {
-            "name": "react/curry",
-            "version": "v1.1.1",
+            "name": "react/partial",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/reactphp/curry",
-                "reference": "v1.1.1"
+                "url": "https://github.com/reactphp/partial.git",
+                "reference": "5ff119c3b708cab6119713f9142f2fb0aed54bfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/reactphp/curry/archive/v1.1.1.zip",
-                "reference": "v1.1.1",
+                "url": "https://api.github.com/repos/reactphp/partial/zipball/5ff119c3b708cab6119713f9142f2fb0aed54bfc",
+                "reference": "5ff119c3b708cab6119713f9142f2fb0aed54bfc",
                 "shasum": ""
             },
             "require": {
@@ -284,15 +284,15 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "2.0-dev"
                 }
             },
             "autoload": {
                 "psr-0": {
-                    "React\\Curry": "src"
+                    "React\\Partial": "src"
                 },
                 "files": [
-                    "src/React/Curry/functions.php"
+                    "src/React/Partial/functions.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -301,11 +301,10 @@
             ],
             "description": "Partial function application.",
             "keywords": [
-                "curry",
-                "currying",
-                "functional-programming"
+                "functional-programming",
+                "partial"
             ],
-            "time": "2013-01-04 17:21:07"
+            "time": "2013-08-30 19:35:50"
         },
         {
             "name": "symfony/config",

@@ -5,7 +5,7 @@ namespace Berti;
 use Ciconia\Ciconia;
 use Ciconia\Extension\Gfm;
 use Github;
-use React\Curry;
+use React\Partial;
 
 function container(array $values = [])
 {
@@ -42,7 +42,7 @@ function container(array $values = [])
     $container['template.homepage_filename'] = 'default.html.twig';
     $container['template.theme'] = null;
     $container['template.renderer'] = $container->share(function () use ($container) {
-        return Curry\bind('Berti\twig_renderer', $container['twig']);
+        return Partial\bind('Berti\twig_renderer', $container['twig']);
     });
 
     $container['github.repository'] = $container->share(function () {
@@ -55,7 +55,7 @@ function container(array $values = [])
         return new Github\Client();
     });
     $container['github.markdown.renderer'] = $container->share(function () use ($container) {
-        return Curry\bind(
+        return Partial\bind(
             'Berti\github_markdown_renderer',
             $container['github.client'],
             $container['github.repository']
@@ -83,17 +83,17 @@ function container(array $values = [])
         return 'Berti\document_finder';
     };
     $container['document.collector'] = $container->share(function() use ($container) {
-        return Curry\bind(
+        return Partial\bind(
             'Berti\document_collector',
             $container['document.finder'],
-            Curry\placeholder(),
-            Curry\placeholder(),
+            Partial\placeholder(),
+            Partial\placeholder(),
             $container['input.directory_index'],
             $container['output.directory_index']
         );
     });
     $container['document.template_selector'] = $container->share(function() use ($container) {
-        return Curry\bind(
+        return Partial\bind(
             'Berti\document_template_selector',
             $container['output.directory_index'],
             $container['template.default_filename'],
@@ -106,7 +106,7 @@ function container(array $values = [])
         return $content;
     });
     $container['document.processor'] = $container->share(function() use ($container) {
-        return Curry\bind(
+        return Partial\bind(
             'Berti\document_processor',
             $container['markdown.renderer'],
             $container['template.renderer'],
