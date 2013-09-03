@@ -72,7 +72,7 @@ EOF
             $command->run($input, $output);
         };
 
-        $track = function($id, $path) use ($watcher, $build) {
+        $track = function ($id, $path) use ($watcher, $build) {
             $watcher->track($id, $path, FilesystemEvent::MODIFY | FilesystemEvent::DELETE);
             $watcher->addListener($id, function (FilesystemEvent $event) use ($build) {
                 $build($event->getResource(), $event->getTypeString());

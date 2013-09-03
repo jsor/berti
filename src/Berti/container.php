@@ -15,14 +15,14 @@ function container(array $values = [])
     $container['output.directory_index'] = 'index.html';
 
     $container['twig.options'] = [];
-    $container['twig.templates'] = function() use ($container) {
+    $container['twig.templates'] = function () use ($container) {
         $defaultTemplate = $container['template.default'];
 
         return [
             $defaultTemplate => '{{ berti.content|raw }}'
         ];
     };
-    $container['twig'] = $container->share(function() use ($container) {
+    $container['twig'] = $container->share(function () use ($container) {
         $loader = new \Twig_Loader_Chain();
 
         $theme = $container['template.theme'];
@@ -80,7 +80,7 @@ function container(array $values = [])
     $container['document.finder'] = function () {
         return 'Berti\document_finder';
     };
-    $container['document.collector'] = $container->share(function() use ($container) {
+    $container['document.collector'] = $container->share(function () use ($container) {
         return Partial\bind(
             'Berti\document_collector',
             $container['document.finder'],
@@ -90,19 +90,19 @@ function container(array $values = [])
             $container['output.directory_index']
         );
     });
-    $container['document.template_selector'] = $container->share(function() use ($container) {
+    $container['document.template_selector'] = $container->share(function () use ($container) {
         return Partial\bind(
             'Berti\document_template_selector',
             $container['template.default'],
             $container['template.map']
         );
     });
-    $container['document.output_content_filter'] = $container->protect(function($content, $document, array $documentCollection) {
+    $container['document.output_content_filter'] = $container->protect(function ($content, $document, array $documentCollection) {
         $content = document_output_rewrite_links_filter($content, $document, $documentCollection);
 
         return $content;
     });
-    $container['document.processor'] = $container->share(function() use ($container) {
+    $container['document.processor'] = $container->share(function () use ($container) {
         return Partial\bind(
             'Berti\document_processor',
             $container['markdown.renderer'],
@@ -112,7 +112,7 @@ function container(array $values = [])
         );
     });
 
-    $container['console.commands'] = $container->share(function() use ($container) {
+    $container['console.commands'] = $container->share(function () use ($container) {
         return [
             new Console\Command\GenerateCommand(
                 $container['document.collector'],
@@ -124,7 +124,7 @@ function container(array $values = [])
             )
         ];
     });
-    $container['console'] = $container->share(function() use ($container) {
+    $container['console'] = $container->share(function () use ($container) {
         return new Console\Application(
             $container['console.commands']
         );
