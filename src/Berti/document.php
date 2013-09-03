@@ -69,10 +69,12 @@ function document_processor($markdownRenderer, $templateRenderer, $templateSelec
     return $outputFilter($rendered, $document, $documentCollection);
 }
 
-function document_template_selector($outputDirectoryIndex, $defaultTemplate, $homepageTemplate, Document $document)
+function document_template_selector($defaultTemplate, array $templateMap, Document $document)
 {
-    if ($outputDirectoryIndex === $document->output->getRelativePathname()) {
-        return $homepageTemplate;
+    $outputFile = $document->output->getRelativePathname();
+    
+    if (array_key_exists($outputFile, $templateMap)) {
+        return $templateMap[$outputFile];
     } else {
         return $defaultTemplate;
     }

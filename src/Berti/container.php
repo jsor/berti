@@ -16,12 +16,10 @@ function container(array $values = [])
 
     $container['twig.options'] = [];
     $container['twig.templates'] = function() use ($container) {
-        $defaultTemplate = $container['template.default_filename'];
-        $homepageTemplate = $container['template.homepage_filename'];
+        $defaultTemplate = $container['template.default'];
 
         return [
-            $defaultTemplate => '{{ berti.content|raw }}',
-            $homepageTemplate => '{{ berti.content|raw }}'
+            $defaultTemplate => '{{ berti.content|raw }}'
         ];
     };
     $container['twig'] = $container->share(function() use ($container) {
@@ -38,8 +36,8 @@ function container(array $values = [])
         return new \Twig_Environment($loader, $container['twig.options']);
     });
 
-    $container['template.default_filename'] = 'default.html.twig';
-    $container['template.homepage_filename'] = 'default.html.twig';
+    $container['template.default'] = 'default.html.twig';
+    $container['template.map'] = [];
     $container['template.theme'] = null;
     $container['template.renderer'] = $container->share(function () use ($container) {
         return Partial\bind('Berti\twig_renderer', $container['twig']);
@@ -95,9 +93,8 @@ function container(array $values = [])
     $container['document.template_selector'] = $container->share(function() use ($container) {
         return Partial\bind(
             'Berti\document_template_selector',
-            $container['output.directory_index'],
-            $container['template.default_filename'],
-            $container['template.homepage_filename']
+            $container['template.default'],
+            $container['template.map']
         );
     });
     $container['document.output_content_filter'] = $container->protect(function($content, $document, array $documentCollection) {
