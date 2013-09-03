@@ -49,9 +49,6 @@ function container(array $values = [])
     $container['github.client'] = $container->share(function () {
         return new Github\Client();
     });
-    $container['github.client'] = $container->share(function () {
-        return new Github\Client();
-    });
     $container['github.markdown.renderer'] = $container->share(function () use ($container) {
         return Partial\bind(
             'Berti\github_markdown_renderer',
