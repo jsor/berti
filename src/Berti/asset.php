@@ -22,9 +22,7 @@ function asset_finder($path)
     $finder = new Finder();
 
     return $finder
-        ->name('/\.(html?|js|css|jpe?g|gif|png)$/')
-        ->files()
-        ->in($path)
+        ->append(array())
     ;
 }
 
