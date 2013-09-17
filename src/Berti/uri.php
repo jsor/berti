@@ -5,7 +5,7 @@ namespace Berti;
 function uri_rewriter($url, $sourceFile, $targetFile)
 {
     // First check also matches protocol-relative urls like //example.com
-    if ('/' === $url[0] || false !== strpos($url, '://') || 0 === strpos($url, 'data:')) {
+    if ((isset($url[0])  && '/' === $url[0]) || false !== strpos($url, '://') || 0 === strpos($url, 'data:')) {
         return $url;
     }
 
