@@ -101,11 +101,21 @@ function document_output_rewrite_links_filter($content, Document $document, arra
             '/'
         );
 
+        $hash = '';
+
+        if (false !== strpos($url, '#')) {
+            list($url, $hash) = explode('#', $url);
+        }
+
         if (!isset($map[$url])) {
             return $matches[0];
         }
 
-        return str_replace($matchedUrl, $map[$url], $matches[0]);
+        if ('' !== $hash) {
+            $hash = '#' . $hash;
+        }
+
+        return str_replace($matchedUrl, $map[$url] . $hash, $matches[0]);
     };
 
     $content = preg_replace_callback('/href=(["\']?)(?P<url>.*?)\\1/i', $callback, $content);
