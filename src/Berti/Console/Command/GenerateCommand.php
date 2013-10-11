@@ -81,9 +81,9 @@ EOF
                 $asset->output->getRelativePathname()
             ));
 
-            $asset = call_user_func($this->assetProcessor, $asset, $assets);
+            $content = call_user_func($this->assetProcessor, $asset, $assets);
 
-            $filesystem->copy($asset->input->getPathname(), $asset->output->getPathname());
+            $filesystem->dumpFile($asset->output->getPathname(), $content);
 
             $output->writeln('<info>Done</info>');
         }

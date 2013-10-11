@@ -47,5 +47,5 @@ function asset_collector($finder, $path, $targetDir)
 
 function asset_processor($outputFilter, Asset $asset, array $assetCollection)
 {
-    return $outputFilter($asset, $assetCollection);
+    return $outputFilter($asset->input->getContents(), $asset, $assetCollection);
 }

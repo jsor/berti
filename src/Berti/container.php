@@ -94,7 +94,7 @@ function container(array $values = [])
             $container['template.map']
         );
     });
-    $container['document.output_content_filter'] = $container->protect(function ($content, $document, array $documentCollection) {
+    $container['document.filter'] = $container->protect(function ($content, $document, array $documentCollection) {
         $content = document_output_rewrite_links_filter($content, $document, $documentCollection);
 
         return $content;
@@ -105,7 +105,7 @@ function container(array $values = [])
             $container['markdown.renderer'],
             $container['template.renderer'],
             $container['document.template_selector'],
-            $container['document.output_content_filter']
+            $container['document.filter']
         );
     });
 
@@ -118,8 +118,8 @@ function container(array $values = [])
             $container['asset.finder']
         );
     });
-    $container['asset.filter'] = $container->protect(function ($asset, array $assetCollection) {
-        return $asset;
+    $container['asset.filter'] = $container->protect(function ($content, $asset, array $assetCollection) {
+        return $content;
     });
     $container['asset.processor'] = $container->share(function () use ($container) {
         return Partial\bind(
