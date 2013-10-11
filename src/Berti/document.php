@@ -60,6 +60,12 @@ function document_processor($markdownRenderer, $templateRenderer, $templateSelec
     $context = [
         'content' => $markdownRenderer($document->input->getContents()),
         'document' => $document,
+        'documents' => $documentCollection,
+        'relative_root' => uri_rewriter(
+            '',
+            '/',
+            $document->output->getRelativePathname()
+        )
     ];
 
     $template = $templateSelector($document);
