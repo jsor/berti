@@ -29,7 +29,7 @@ class WatchCommand extends Command
         $this
             ->setName('watch')
             ->setDefinition([
-                new InputArgument('build-dir', InputArgument::OPTIONAL, 'Path to the build directory', './berti-build')
+                new InputArgument('build-dir', InputArgument::OPTIONAL, 'Path to the build directory', './.berti/build')
             ])
             ->setDescription('Watches for file changes and runs the generate command')
             ->setHelp(<<<EOF

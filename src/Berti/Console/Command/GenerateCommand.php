@@ -31,7 +31,7 @@ class GenerateCommand extends Command
         $this
             ->setName('generate')
             ->setDefinition([
-                new InputArgument('build-dir', InputArgument::OPTIONAL, 'Path to the build directory', './berti-build')
+                new InputArgument('build-dir', InputArgument::OPTIONAL, 'Path to the build directory', './.berti/build')
             ])
             ->setDescription('Generates the documentation')
             ->setHelp(<<<EOF

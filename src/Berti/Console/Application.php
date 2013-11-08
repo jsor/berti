@@ -59,7 +59,7 @@ class Application extends BaseApplication
                    '<info>Using config file: %s</info>',
                    $configFile
                ));
-            } elseif ('./berti.php' !== $this->configFile) {
+            } elseif ('./.berti/config.php' !== $this->configFile) {
                 throw new \RuntimeException('Invalid config file specified.');
             }
         }
