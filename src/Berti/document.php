@@ -128,3 +128,11 @@ function document_output_rewrite_links_filter($content, Document $document, arra
 
     return $content;
 }
+
+function document_output_remove_github_anchor_prefix_filter($content)
+{
+    $content = str_replace('href="#user-content-', 'href="#', $content);
+    $content = str_replace('name="user-content-', 'name="', $content);
+
+    return $content;
+}

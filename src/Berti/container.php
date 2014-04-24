@@ -96,6 +96,7 @@ function container(array $values = [])
     });
     $container['document.filter'] = $container->protect(function ($content, $document, array $documentCollection) {
         $content = document_output_rewrite_links_filter($content, $document, $documentCollection);
+        $content = document_output_remove_github_anchor_prefix_filter($content);
 
         return $content;
     });
