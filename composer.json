@@ -31,16 +31,16 @@
         "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
-        "psr-0": {
-            "Berti": "src/"
+        "psr-4": {
+            "Berti\\": "src/"
         },
         "files": [
-            "src/Berti/asset.php",
-            "src/Berti/container.php",
-            "src/Berti/document.php",
-            "src/Berti/github.php",
-            "src/Berti/twig.php",
-            "src/Berti/uri.php"
+            "src/asset.php",
+            "src/container.php",
+            "src/document.php",
+            "src/github.php",
+            "src/twig.php",
+            "src/uri.php"
         ]
     },
     "bin": [
