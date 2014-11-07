@@ -5,11 +5,12 @@ namespace Berti;
 use Ciconia\Ciconia;
 use Ciconia\Extension\Gfm;
 use Github;
+use Pimple\Container;
 use React\Partial;
 
 function container(array $values = [])
 {
-    $container = new \Pimple;
+    $container = new Container;
 
     $container['input.directory_index'] = 'README.md';
     $container['output.directory_index'] = 'index.html';
@@ -22,7 +23,7 @@ function container(array $values = [])
             $defaultTemplate => '{{ berti.content|raw }}'
         ];
     };
-    $container['twig'] = $container->share(function () use ($container) {
+    $container['twig'] = function () use ($container) {
         $loader = new \Twig_Loader_Chain();
 
         $theme = $container['template.theme'];
@@ -34,30 +35,30 @@ function container(array $values = [])
         $loader->addLoader(new \Twig_Loader_Array($container['twig.templates']));
 
         return new \Twig_Environment($loader, $container['twig.options']);
-    });
+    };
 
     $container['template.default'] = 'default.html.twig';
     $container['template.map'] = [];
     $container['template.theme'] = null;
-    $container['template.renderer'] = $container->share(function () use ($container) {
+    $container['template.renderer'] = function () use ($container) {
         return Partial\bind('Berti\twig_renderer', $container['twig']);
-    });
+    };
 
-    $container['github.repository'] = $container->share(function () {
+    $container['github.repository'] = function () {
         return github_repository_detector();
-    });
-    $container['github.client'] = $container->share(function () {
+    };
+    $container['github.client'] = function () {
         return new Github\Client();
-    });
-    $container['github.markdown.renderer'] = $container->share(function () use ($container) {
+    };
+    $container['github.markdown.renderer'] = function () use ($container) {
         return Partial\bind(
             'Berti\github_markdown_renderer',
             $container['github.client'],
             $container['github.repository']
         );
-    });
+    };
 
-    $container['ciconia'] = $container->share(function () {
+    $container['ciconia'] = function () {
         $ciconia = new Ciconia();
         $ciconia->addExtension(new Gfm\FencedCodeBlockExtension());
         $ciconia->addExtension(new Gfm\TaskListExtension());
@@ -65,10 +66,10 @@ function container(array $values = [])
         $ciconia->addExtension(new Gfm\WhiteSpaceExtension());
 
         return $ciconia;
-    });
-    $container['ciconia.markdown.renderer'] = $container->share(function () use ($container) {
+    };
+    $container['ciconia.markdown.renderer'] = function () use ($container) {
         return array($container['ciconia'], 'render');
-    });
+    };
 
     $container['markdown.renderer'] = function () use ($container) {
         return $container['github.markdown.renderer'];
@@ -77,7 +78,7 @@ function container(array $values = [])
     $container['document.finder'] = function () {
         return 'Berti\document_finder';
     };
-    $container['document.collector'] = $container->share(function () use ($container) {
+    $container['document.collector'] = function () use ($container) {
         return Partial\bind(
             'Berti\document_collector',
             $container['document.finder'],
@@ -86,21 +87,21 @@ function container(array $values = [])
             $container['input.directory_index'],
             $container['output.directory_index']
         );
-    });
-    $container['document.template_selector'] = $container->share(function () use ($container) {
+    };
+    $container['document.template_selector'] = function () use ($container) {
         return Partial\bind(
             'Berti\document_template_selector',
             $container['template.default'],
             $container['template.map']
         );
-    });
+    };
     $container['document.filter'] = $container->protect(function ($content, $document, array $documentCollection) {
         $content = document_output_rewrite_links_filter($content, $document, $documentCollection);
         $content = document_output_remove_github_anchor_prefix_filter($content);
 
         return $content;
     });
-    $container['document.processor'] = $container->share(function () use ($container) {
+    $container['document.processor'] = function () use ($container) {
         return Partial\bind(
             'Berti\document_processor',
             $container['markdown.renderer'],
@@ -108,28 +109,28 @@ function container(array $values = [])
             $container['document.template_selector'],
             $container['document.filter']
         );
-    });
+    };
 
     $container['asset.finder'] = function () {
         return 'Berti\asset_finder';
     };
-    $container['asset.collector'] = $container->share(function () use ($container) {
+    $container['asset.collector'] = function () use ($container) {
         return Partial\bind(
             'Berti\asset_collector',
             $container['asset.finder']
         );
-    });
+    };
     $container['asset.filter'] = $container->protect(function ($content, $asset, array $assetCollection) {
         return $content;
     });
-    $container['asset.processor'] = $container->share(function () use ($container) {
+    $container['asset.processor'] = function () use ($container) {
         return Partial\bind(
             'Berti\asset_processor',
             $container['asset.filter']
         );
-    });
+    };
 
-    $container['console.commands'] = $container->share(function () use ($container) {
+    $container['console.commands'] = function () use ($container) {
         return [
             new Console\Command\GenerateCommand(
                 $container['document.collector'],
@@ -142,12 +143,12 @@ function container(array $values = [])
                 $container['template.theme']
             )
         ];
-    });
-    $container['console'] = $container->share(function () use ($container) {
+    };
+    $container['console'] = function () use ($container) {
         return new Console\Application(
             $container['console.commands']
         );
-    });
+    };
 
     foreach ($values as $key => $value) {
         $container[$key] = $value;

@@ -20,7 +20,7 @@
         "symfony/console": "~2.3",
         "symfony/finder": "~2.3",
         "symfony/filesystem": "~2.3",
-        "pimple/pimple": "~1.0",
+        "pimple/pimple": "~3.0",
         "knplabs/github-api": "~1.1",
         "twig/twig": "~1.13",
         "react/partial": "~2.0",
