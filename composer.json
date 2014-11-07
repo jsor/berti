@@ -27,9 +27,6 @@
         "henrikbjorn/lurker": "~1.0",
         "kzykhys/ciconia": "~1.0"
     },
-    "require-dev": {
-        "phpunit/phpunit": "~4.0"
-    },
     "autoload": {
         "psr-4": {
             "Berti\\": "src/"
