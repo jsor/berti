@@ -133,6 +133,7 @@ function document_output_remove_github_anchor_prefix_filter($content)
 {
     $content = str_replace('href="#user-content-', 'href="#', $content);
     $content = str_replace('name="user-content-', 'name="', $content);
+    $content = str_replace('id="user-content-', 'name="', $content);
 
     return $content;
 }
