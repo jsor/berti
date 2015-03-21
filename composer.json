@@ -40,6 +40,11 @@
             "src/uri.php"
         ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Berti\\": "tests/"
+        }
+    },
     "bin": [
         "bin/berti"
     ],

@@ -8,15 +8,15 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="false"
-         bootstrap="tests/bootstrap.php"
+         bootstrap="vendor/autoload.php"
 >
     <testsuite name="Berti Test Suite">
-        <directory>./tests/Berti/</directory>
+        <directory>./tests/</directory>
     </testsuite>
 
     <filter>
         <whitelist>
-            <directory>./src/Berti/</directory>
+            <directory>./src/</directory>
         </whitelist>
     </filter>
 </phpunit>
