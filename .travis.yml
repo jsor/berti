@@ -10,6 +10,6 @@ before_install:
   - composer self-update
 
 install:
-  - composer install --dev --prefer-source
+  - composer install --prefer-source
 
 script: phpunit --coverage-text
