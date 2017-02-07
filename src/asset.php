@@ -17,16 +17,15 @@ class Asset
     }
 }
 
-function asset_finder($path)
+function asset_finder(string $path): Finder
 {
     $finder = new Finder();
 
     return $finder
-        ->append(array())
-    ;
+        ->append([]);
 }
 
-function asset_collector($finder, $path, $targetDir)
+function asset_collector(callable $finder, string $path, string $targetDir): array
 {
     $assets = [];
 
@@ -34,7 +33,7 @@ function asset_collector($finder, $path, $targetDir)
         $relativePath = ltrim($file->getRelativePathName(), DIRECTORY_SEPARATOR);
 
         $outputFile = new SplFileInfo(
-            $targetDir.DIRECTORY_SEPARATOR.$relativePath,
+            $targetDir . DIRECTORY_SEPARATOR . $relativePath,
             $file->getRelativePath(),
             $relativePath
         );
@@ -45,7 +44,7 @@ function asset_collector($finder, $path, $targetDir)
     return $assets;
 }
 
-function asset_processor($outputFilter, Asset $asset, array $assetCollection)
+function asset_processor(callable $outputFilter, Asset $asset, array $assetCollection): string
 {
     return $outputFilter($asset->input->getContents(), $asset, $assetCollection);
 }

@@ -2,13 +2,12 @@
 
 namespace Berti;
 
-use Ciconia\Ciconia;
-use Ciconia\Extension\Gfm;
 use Github;
+use Http;
 use Pimple\Container;
 use React\Partial;
 
-function container(array $values = [])
+function container(array $values = []): Container
 {
     $container = new Container;
 
@@ -56,19 +55,6 @@ function container(array $values = [])
             $container['github.client'],
             $container['github.repository']
         );
-    };
-
-    $container['ciconia'] = function () {
-        $ciconia = new Ciconia();
-        $ciconia->addExtension(new Gfm\FencedCodeBlockExtension());
-        $ciconia->addExtension(new Gfm\TaskListExtension());
-        $ciconia->addExtension(new Gfm\InlineStyleExtension());
-        $ciconia->addExtension(new Gfm\WhiteSpaceExtension());
-
-        return $ciconia;
-    };
-    $container['ciconia.markdown.renderer'] = function () use ($container) {
-        return array($container['ciconia'], 'render');
     };
 
     $container['markdown.renderer'] = function () use ($container) {

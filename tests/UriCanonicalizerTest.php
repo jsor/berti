@@ -2,7 +2,9 @@
 
 namespace Berti;
 
-class UriCanonicalizerTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class UriCanonicalizerTest extends TestCase
 {
     /**
      * @dataProvider provideUrls
@@ -11,7 +13,7 @@ class UriCanonicalizerTest extends \PHPUnit_Framework_TestCase
     {
         $canonicalized = uri_canonicalizer($inputUrl, $separator);
 
-        $this->assertEquals($expectedUrl, $canonicalized);
+        self::assertEquals($expectedUrl, $canonicalized);
     }
 
     public function provideUrls()

@@ -56,7 +56,7 @@ EOF
 
         $command = $this->getApplication()->find('generate');
         $arguments = [
-            'build-dir' => $input->getArgument('build-dir')
+            'build-dir' => $buildDir
         ];
         $input = new ArrayInput($arguments);
 

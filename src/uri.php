@@ -2,7 +2,7 @@
 
 namespace Berti;
 
-function uri_rewriter($url, $sourceFile, $targetFile)
+function uri_rewriter(string $url, string $sourceFile, string $targetFile): string
 {
     // First check also matches protocol-relative urls like //example.com
     if ((isset($url[0])  && '/' === $url[0]) || false !== strpos($url, '://') || 0 === strpos($url, 'data:')) {
@@ -100,7 +100,7 @@ function uri_rewriter($url, $sourceFile, $targetFile)
     return $prepend . uri_canonicalizer($path);
 }
 
-function uri_canonicalizer($path, $separator = '/')
+function uri_canonicalizer(string $path, string $separator = '/'): string
 {
     $path = str_replace(['\\', '/'], $separator, $path);
 

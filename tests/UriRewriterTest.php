@@ -2,7 +2,9 @@
 
 namespace Berti;
 
-class UriRewriterTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class UriRewriterTest extends TestCase
 {
     /**
      * @dataProvider provideUrls
@@ -11,7 +13,7 @@ class UriRewriterTest extends \PHPUnit_Framework_TestCase
     {
         $filtered = uri_rewriter($inputUrl, $sourceFile, $targetFile);
 
-        $this->assertEquals($expectedUrl, $filtered, 'rewrite_url() rewrites relative urls');
+        self::assertEquals($expectedUrl, $filtered, 'rewrite_url() rewrites relative urls');
     }
 
     public function provideUrls()

@@ -17,18 +17,23 @@ class Document
     }
 }
 
-function document_finder($path)
+function document_finder($path): Finder
 {
     $finder = new Finder();
 
     return $finder
         ->name('/\.(markdown|md|mdown)$/')
         ->files()
-        ->in($path)
-    ;
+        ->in($path);
 }
 
-function document_collector($finder, $path, $targetDir, $inputDirectoryIndex = 'README.md', $outputDirectoryIndex = 'index.html')
+function document_collector(
+    callable $finder,
+    string $path,
+    string $targetDir,
+    string $inputDirectoryIndex = 'README.md',
+    string $outputDirectoryIndex = 'index.html'
+): array
 {
     $documents = [];
 
@@ -36,17 +41,17 @@ function document_collector($finder, $path, $targetDir, $inputDirectoryIndex = '
         if ($inputDirectoryIndex === $file->getBasename()) {
             $filename = $outputDirectoryIndex;
         } else {
-            $filename = $file->getBasename('.'.$file->getExtension()) . '.html';
+            $filename = $file->getBasename('.' . $file->getExtension()) . '.html';
         }
 
         $filename = strtolower($filename);
 
-        $relativePath = ltrim($file->getRelativePath().DIRECTORY_SEPARATOR.$filename, DIRECTORY_SEPARATOR);
+        $relativePath = ltrim($file->getRelativePath() . DIRECTORY_SEPARATOR . $filename, DIRECTORY_SEPARATOR);
 
         $outputFile = new SplFileInfo(
-            $targetDir.DIRECTORY_SEPARATOR.$relativePath,
+            $targetDir . DIRECTORY_SEPARATOR . $relativePath,
             $file->getRelativePath(),
-            ltrim($file->getRelativePath().DIRECTORY_SEPARATOR.$filename, DIRECTORY_SEPARATOR)
+            ltrim($file->getRelativePath() . DIRECTORY_SEPARATOR . $filename, DIRECTORY_SEPARATOR)
         );
 
         $documents[] = new Document($file, $outputFile);
@@ -55,7 +60,14 @@ function document_collector($finder, $path, $targetDir, $inputDirectoryIndex = '
     return $documents;
 }
 
-function document_processor($markdownRenderer, $templateRenderer, $templateSelector, $outputFilter, Document $document, array $documentCollection)
+function document_processor(
+    callable $markdownRenderer,
+    callable $templateRenderer,
+    callable $templateSelector,
+    callable $outputFilter,
+    Document $document,
+    array $documentCollection
+): string
 {
     $context = [
         'content' => $markdownRenderer($document->input->getContents()),
@@ -75,7 +87,11 @@ function document_processor($markdownRenderer, $templateRenderer, $templateSelec
     return $outputFilter($rendered, $document, $documentCollection);
 }
 
-function document_template_selector($defaultTemplate, array $templateMap, Document $document)
+function document_template_selector(
+    string $defaultTemplate,
+    array $templateMap,
+    Document $document
+): string
 {
     $outputFile = $document->output->getRelativePathname();
 
@@ -86,7 +102,11 @@ function document_template_selector($defaultTemplate, array $templateMap, Docume
     }
 }
 
-function document_output_rewrite_links_filter($content, Document $document, array $documentCollection)
+function document_output_rewrite_links_filter(
+    string $content,
+    Document $document,
+    array $documentCollection
+): string
 {
     $map = [];
 
@@ -129,7 +149,7 @@ function document_output_rewrite_links_filter($content, Document $document, arra
     return $content;
 }
 
-function document_output_remove_github_anchor_prefix_filter($content)
+function document_output_remove_github_anchor_prefix_filter(string $content): string
 {
     $content = str_replace('href="#user-content-', 'href="#', $content);
     $content = str_replace('name="user-content-', 'name="', $content);

@@ -4,12 +4,16 @@ namespace Berti;
 
 use Github;
 
-function github_markdown_renderer(Github\Client $client, $repository, $text)
+function github_markdown_renderer(
+    Github\Client $client,
+    string $repository,
+    string $text
+): string
 {
     return $client->api('markdown')->render($text, 'markdown', $repository);
 }
 
-function github_repository_detector()
+function github_repository_detector(): string
 {
     exec('git remote -v', $output);
 
