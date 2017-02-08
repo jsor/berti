@@ -5,7 +5,18 @@ use Symfony\Component\Console\Input\ArgvInput;
 
 set_time_limit(0);
 
-require __DIR__.'/../vendor/autoload.php';
+function includeIfExists($file)
+{
+    return file_exists($file) ? include $file : false;
+}
+
+if (
+    !includeIfExists(__DIR__.'/../vendor/autoload.php') &&
+    !includeIfExists(__DIR__.'/../../../autoload.php')
+) {
+    echo 'You must set up the project dependencies using `composer install`' . PHP_EOL;
+    exit(1);
+}
 
 $container = Berti\container();
 
