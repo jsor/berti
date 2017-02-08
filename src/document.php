@@ -24,6 +24,8 @@ function document_finder($path): Finder
     return $finder
         ->name('/\.(markdown|md|mdown)$/')
         ->files()
+        ->notPath('/^vendor/')
+        ->notPath('/^node_modules/')
         ->in($path);
 }
 
