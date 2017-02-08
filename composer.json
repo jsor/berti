@@ -1,5 +1,5 @@
 {
-    "name": "berti/berti",
+    "name": "jsor/berti",
     "description": "Generates documentations from the Markdown files in a Git(Hub) repository.",
     "keywords": [
         "documentation",
