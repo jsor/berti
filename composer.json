@@ -39,9 +39,11 @@
             "src/asset.php",
             "src/container.php",
             "src/document.php",
+            "src/generator.php",
             "src/github.php",
             "src/twig.php",
-            "src/uri.php"
+            "src/uri.php",
+            "src/watcher.php"
         ]
     },
     "autoload-dev": {

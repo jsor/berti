@@ -116,17 +116,32 @@ function container(array $values = []): Container
         );
     };
 
+    $container['generator'] = function () use ($container) {
+        return Partial\bind(
+            'Berti\generator',
+            $container['document.collector'],
+            $container['document.processor'],
+            $container['asset.collector'],
+            $container['asset.processor']
+        );
+    };
+
+    $container['watcher'] = function () use ($container) {
+        return Partial\bind(
+            'Berti\watcher',
+            $container['generator'],
+            $container['document.finder'],
+            $container['template.theme']
+        );
+    };
+
     $container['console.commands'] = function () use ($container) {
         return [
             new Console\Command\GenerateCommand(
-                $container['document.collector'],
-                $container['document.processor'],
-                $container['asset.collector'],
-                $container['asset.processor']
+                $container['generator']
             ),
             new Console\Command\WatchCommand(
-                $container['document.finder'],
-                $container['template.theme']
+                $container['watcher']
             )
         ];
     };
