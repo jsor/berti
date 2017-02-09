@@ -42,6 +42,7 @@
             "src/document.php",
             "src/generator.php",
             "src/github.php",
+            "src/pattern.php",
             "src/twig.php",
             "src/uri.php",
             "src/watcher.php"

@@ -97,11 +97,17 @@ function document_template_selector(
 {
     $outputFile = $document->output->getRelativePathname();
 
-    if (array_key_exists($outputFile, $templateMap)) {
-        return $templateMap[$outputFile];
-    } else {
-        return $defaultTemplate;
+    foreach ($templateMap as $file => $template) {
+        $pattern = pattern_to_regex($file);
+
+        if (!preg_match($pattern, $outputFile)) {
+            continue;
+        }
+
+        return $template;
     }
+
+    return $defaultTemplate;
 }
 
 function document_output_rewrite_links_filter(
