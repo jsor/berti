@@ -43,8 +43,8 @@ function container(array $values = []): Container
         return Partial\bind('Berti\twig_renderer', $container['twig']);
     };
 
-    $container['github.repository'] = function () {
-        return github_repository_detector();
+    $container['github.repository_detector'] = function () {
+        return 'Berti\github_repository_detector';
     };
     $container['github.client'] = function () {
         return new Github\Client();
@@ -53,7 +53,7 @@ function container(array $values = []): Container
         return Partial\bind(
             'Berti\github_markdown_renderer',
             $container['github.client'],
-            $container['github.repository']
+            $container['github.repository_detector']
         );
     };
 

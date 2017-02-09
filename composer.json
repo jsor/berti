@@ -26,7 +26,8 @@
         "knplabs/github-api": "^2.0",
         "twig/twig": "^2.0",
         "react/partial": "^2.0",
-        "henrikbjorn/lurker": "^1.0"
+        "henrikbjorn/lurker": "^1.0",
+        "symfony/process": "^3.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.0"

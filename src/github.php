@@ -3,22 +3,37 @@
 namespace Berti;
 
 use Github;
+use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Process\Process;
 
 function github_markdown_renderer(
     Github\Client $client,
-    string $repository,
-    string $text
+    callable $repositoryDetector,
+    SplFileInfo $document
 ): string
 {
-    return $client->api('markdown')->render($text, 'markdown', $repository);
+    return $client->api('markdown')->render(
+        $document->getContents(),
+        'markdown',
+        $repositoryDetector($document) ?: null
+    );
 }
 
-function github_repository_detector(): string
+function github_repository_detector(SplFileInfo $document): string
 {
-    exec('git remote -v', $output);
+    $cwd = $document->getRealPath();
 
-    foreach (explode("\n", $output[0]) as $line) {
-        if (false === strpos($line, 'github.com')) {
+    if (!$document->isDir()) {
+        $cwd = dirname($cwd);
+    }
+
+    $process = new Process('git remote -v', $cwd);
+    $process->run();
+
+    $output = $process->getOutput();
+
+    foreach (explode("\n", $output) as $line) {
+        if (false === stripos($line, 'github.com')) {
             continue;
         }
 
@@ -30,5 +45,5 @@ function github_repository_detector(): string
         return substr($parts['path'], 0, -4);
     }
 
-    return null;
+    return '';
 }

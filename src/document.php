@@ -72,7 +72,7 @@ function document_processor(
 ): string
 {
     $context = [
-        'content' => $markdownRenderer($document->input->getContents()),
+        'content' => $markdownRenderer($document->input),
         'document' => $document,
         'documents' => $documentCollection,
         'relative_root' => uri_rewriter(
