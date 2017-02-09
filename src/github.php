@@ -42,7 +42,13 @@ function github_repository_detector(SplFileInfo $document): string
         $url = str_replace('git@', '', $url);
         $parts = parse_url($url);
 
-        return substr($parts['path'], 0, -4);
+        $path = trim($parts['path'], '/');
+
+        if ('.git' === substr($path, -4)) {
+            $path = substr($path, 0, -4);
+        }
+
+        return $path;
     }
 
     return '';
