@@ -71,13 +71,16 @@ function document_processor(
     array $documentCollection
 ): string
 {
+    $content = $markdownRenderer(
+        $document->input->getContents(),
+        [
+            'cwd' => dirname($document->input->getRealPath())
+        ]
+    );
+
     $context = [
-        'content' => $markdownRenderer(
-            $document->input->getContents(),
-            [
-                'cwd' => dirname($document->input->getRealPath())
-            ]
-        ),
+        'content' => $content,
+        'title' => document_title_extractor($content),
         'document' => $document,
         'documents' => $documentCollection,
         'relative_root' => uri_rewriter(
@@ -117,6 +120,28 @@ function document_template_selector(
     }
 
     return $defaultTemplate;
+}
+
+function document_title_extractor(string $content): string
+{
+    $dom = new \DOMDocument();
+    $success = $dom->loadHTML($content);
+
+    if (!$success) {
+        return '';
+    }
+
+    $xpath = new \DOMXPath($dom);
+
+    foreach (range(1, 6) as $level) {
+        $element = $xpath->evaluate('descendant-or-self::h' . $level)->item(0);
+
+        if ($element && $element->textContent) {
+            return $element->textContent;
+        }
+    }
+
+    return '';
 }
 
 function document_output_rewrite_links_filter(
