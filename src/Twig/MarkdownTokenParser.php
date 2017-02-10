@@ -7,17 +7,42 @@ class MarkdownTokenParser extends \Twig_TokenParser
     public function parse(\Twig_Token $token)
     {
         $lineno = $token->getLine();
+        $stream = $this->parser->getStream();
 
-        $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
-        $markdown = $this->parser->subparse(array($this, 'decideMarkdownEnd'), true);
-        $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
+        $options = [];
 
-        return new MarkdownNode($markdown, $lineno, $this->getTag());
-    }
+        while (!$stream->test(\Twig_Token::BLOCK_END_TYPE)) {
+            if (!$stream->test(\Twig_Token::NAME_TYPE)) {
+                $token = $stream->getCurrent();
 
-    public function decideMarkdownEnd(\Twig_Token $token)
-    {
-        return $token->test('endmarkdown');
+                throw new \Twig_Error_Syntax(
+                    sprintf(
+                        'Unexpected token "%s" of value "%s"',
+                        \Twig_Token::typeToEnglish($token->getType()),
+                        $token->getValue()
+                    ),
+                    $token->getLine()
+                );
+            }
+
+            $name = $stream->getCurrent()->getValue();
+            $stream->next();
+            $stream->expect(\Twig_Token::OPERATOR_TYPE, '=');
+            $options[$name] = $this->parser->getExpressionParser()->parseExpression();
+        }
+
+        $stream->expect(\Twig_Token::BLOCK_END_TYPE);
+
+        $body = $this->parser->subparse(
+            function(\Twig_Token $token) {
+                return $token->test('end' . $this->getTag());
+            },
+            true
+        );
+
+        $stream->expect(\Twig_Token::BLOCK_END_TYPE);
+
+        return new MarkdownNode($body, new \Twig_Node($options), $lineno, $this->getTag());
     }
 
     public function getTag()

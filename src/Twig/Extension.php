@@ -31,9 +31,17 @@ class Extension extends \Twig_Extension
         return $currentCwd;
     }
 
-    public function renderMarkdown(string $content)
+    public function renderMarkdown(string $content, array $options = [])
     {
-        return call_user_func($this->markdownRenderer, $content, $this->cwd);
+        if (!array_key_exists('cwd', $options)) {
+            $options['cwd'] = $this->cwd;
+        }
+
+        return call_user_func(
+            $this->markdownRenderer,
+            $content,
+            $options
+        );
     }
 
     public function getTokenParsers()

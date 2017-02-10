@@ -9,17 +9,31 @@ function github_markdown_renderer(
     Github\Client $client,
     callable $repositoryDetector,
     $content,
-    $cwd = null
+    array $options = []
 ): string
 {
+    $repository = null;
+
+    if (array_key_exists('repo', $options)) {
+        $repository = $options['repo'];
+    }
+
+    if (array_key_exists('repository', $options)) {
+        $repository = $options['repository'];
+    }
+
+    if (!$repository) {
+        $repository = $repositoryDetector($options['cwd'] ?? null) ?: null;
+    }
+
     return $client->api('markdown')->render(
         $content,
         'markdown',
-        $repositoryDetector($cwd) ?: null
+        $repository
     );
 }
 
-function github_repository_detector(string $cwd = null): string
+function github_repository_detector($remote, string $cwd = null): string
 {
     $process = new Process('git remote -v', $cwd ?: null);
     $process->run();
@@ -27,6 +41,10 @@ function github_repository_detector(string $cwd = null): string
     $output = $process->getOutput();
 
     foreach (explode("\n", $output) as $line) {
+        if (0 !== strpos($line, $remote)) {
+            continue;
+        }
+
         if (false === stripos($line, 'github.com')) {
             continue;
         }

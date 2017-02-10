@@ -74,7 +74,9 @@ function document_processor(
     $context = [
         'content' => $markdownRenderer(
             $document->input->getContents(),
-            dirname($document->input->getRealPath())
+            [
+                'cwd' => dirname($document->input->getRealPath())
+            ]
         ),
         'document' => $document,
         'documents' => $documentCollection,

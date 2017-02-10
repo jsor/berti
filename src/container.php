@@ -51,7 +51,10 @@ function container(array $values = []): Container
     };
 
     $container['github.repository_detector'] = function () {
-        return 'Berti\github_repository_detector';
+        return Partial\bind(
+            'Berti\github_repository_detector',
+            'origin'
+        );
     };
     $container['github.client'] = function () {
         $client = new Github\Client();
