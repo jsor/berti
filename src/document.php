@@ -72,7 +72,10 @@ function document_processor(
 ): string
 {
     $context = [
-        'content' => $markdownRenderer($document->input),
+        'content' => $markdownRenderer(
+            $document->input->getContents(),
+            dirname($document->input->getRealPath())
+        ),
         'document' => $document,
         'documents' => $documentCollection,
         'relative_root' => uri_rewriter(
@@ -84,7 +87,11 @@ function document_processor(
 
     $template = $templateSelector($document);
 
-    $rendered = $templateRenderer($template, ['berti' => $context]);
+    $rendered = $templateRenderer(
+        $template,
+        ['berti' => $context],
+        dirname($document->input->getRealPath())
+    );
 
     return $outputFilter($rendered, $document, $documentCollection);
 }

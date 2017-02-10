@@ -3,31 +3,25 @@
 namespace Berti;
 
 use Github;
-use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 
 function github_markdown_renderer(
     Github\Client $client,
     callable $repositoryDetector,
-    SplFileInfo $document
+    $content,
+    $cwd = null
 ): string
 {
     return $client->api('markdown')->render(
-        $document->getContents(),
+        $content,
         'markdown',
-        $repositoryDetector($document) ?: null
+        $repositoryDetector($cwd) ?: null
     );
 }
 
-function github_repository_detector(SplFileInfo $document): string
+function github_repository_detector(string $cwd = null): string
 {
-    $cwd = $document->getRealPath();
-
-    if (!$document->isDir()) {
-        $cwd = dirname($cwd);
-    }
-
-    $process = new Process('git remote -v', $cwd);
+    $process = new Process('git remote -v', $cwd ?: null);
     $process->run();
 
     $output = $process->getOutput();

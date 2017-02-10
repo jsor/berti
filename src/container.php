@@ -22,6 +22,9 @@ function container(array $values = []): Container
             $defaultTemplate => '{{ berti.content|raw }}'
         ];
     };
+    $container['twig.extension'] = function () use ($container) {
+        return new Twig\Extension($container['markdown.renderer']);
+    };
     $container['twig'] = function () use ($container) {
         $loader = new \Twig_Loader_Chain();
 
@@ -33,7 +36,11 @@ function container(array $values = []): Container
 
         $loader->addLoader(new \Twig_Loader_Array($container['twig.templates']));
 
-        return new \Twig_Environment($loader, $container['twig.options']);
+        $twig = new \Twig_Environment($loader, $container['twig.options']);
+
+        $twig->addExtension($container['twig.extension']);
+
+        return $twig;
     };
 
     $container['template.default'] = 'default.html.twig';
