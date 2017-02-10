@@ -47,7 +47,17 @@ function container(array $values = []): Container
         return 'Berti\github_repository_detector';
     };
     $container['github.client'] = function () {
-        return new Github\Client();
+        $client = new Github\Client();
+
+        if ($token = getenv('GITHUB_TOKEN')) {
+            $client->authenticate(
+                $token,
+                null,
+                Github\Client::AUTH_HTTP_TOKEN
+            );
+        }
+
+        return $client;
     };
     $container['github.markdown.renderer'] = function () use ($container) {
         return Partial\bind(
