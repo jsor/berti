@@ -63,7 +63,7 @@ function watcher(
     }
 
     $watcher->track('new', getcwd(), FilesystemEvent::CREATE);
-    $watcher->addListener('new', function (FilesystemEvent $event) use ($track, $build) {
+    $watcher->addListener('new', function (FilesystemEvent $event) use ($documentFinder, $track, $build) {
         $documents = call_user_func(
             $documentFinder,
             getcwd()
