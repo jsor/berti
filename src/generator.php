@@ -26,12 +26,6 @@ function generator(
 
     // ---
 
-    if ($filesystem->exists($buildDir)) {
-        $output->write(sprintf('<comment>==> Removing previous build %s</comment>...', $buildDir));
-        $filesystem->remove($buildDir);
-        $output->writeln('<info>Done</info>');
-    }
-
     $output->writeln('Starting build');
 
     $output->writeln('Processing assets...');
