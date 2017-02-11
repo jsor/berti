@@ -67,6 +67,7 @@ function document_processor(
     callable $templateRenderer,
     callable $templateSelector,
     callable $outputFilter,
+    string $buildDir,
     Document $document,
     array $documentCollection
 ): string
@@ -83,6 +84,7 @@ function document_processor(
         'title' => document_title_extractor($content),
         'document' => $document,
         'documents' => $documentCollection,
+        'build_dir' => $buildDir,
         'relative_root' => uri_rewriter(
             '',
             '/',

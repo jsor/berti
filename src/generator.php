@@ -67,7 +67,12 @@ function generator(
             $document->output->getRelativePathname()
         ));
 
-        $content = call_user_func($documentProcessor, $document, $documents);
+        $content = call_user_func(
+            $documentProcessor,
+            $buildDir,
+            $document,
+            $documents
+        );
 
         $filesystem->dumpFile($document->output->getPathname(), $content);
 
