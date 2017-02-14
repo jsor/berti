@@ -146,6 +146,10 @@ function container(array $values = []): Container
         );
     };
 
+    $container['server'] = function () use ($container) {
+        return 'Berti\server';
+    };
+
     $container['watcher'] = function () use ($container) {
         return Partial\bind(
             'Berti\watcher',
@@ -159,6 +163,9 @@ function container(array $values = []): Container
         return [
             new Console\Command\GenerateCommand(
                 $container['generator']
+            ),
+            new Console\Command\ServerCommand(
+                $container['server']
             ),
             new Console\Command\WatchCommand(
                 $container['watcher']
