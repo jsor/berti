@@ -46,6 +46,8 @@ function run($path, $scriptName)
             $currentScriptName .= DIRECTORY_SEPARATOR . 'index.html';
         }
 
+        $currentScriptName = ltrim($currentScriptName, '/');
+
         if ($currentScriptName !== $document->output->getRelativePathname()) {
             continue;
         }
