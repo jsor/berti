@@ -35,6 +35,8 @@ function run($path, $scriptName)
         call_user_func(include $configFile, $container);
     }
 
+    $buildDir = getenv('BERTI_BUILD_DIR') ?: $path;
+
     $documentCollector = $container['document.collector'];
     $documentProcessor = $container['document.processor'];
     $assetCollector = $container['asset.collector'];
@@ -42,7 +44,7 @@ function run($path, $scriptName)
 
     $documents = $documentCollector(
         $path,
-        $path
+        $buildDir
     );
 
     /** @var \Berti\Document $document */
@@ -60,12 +62,12 @@ function run($path, $scriptName)
         }
 
         http_response_code(200);
-        echo $documentProcessor($path, $document, $documents);
+        echo $documentProcessor($buildDir, $document, $documents);
         return;
     }
     $assets = $assetCollector(
         $path,
-        $path
+        $buildDir
     );
 
     /** @var \Berti\Asset $asset */
