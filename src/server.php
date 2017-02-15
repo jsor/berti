@@ -10,7 +10,7 @@ use Symfony\Component\Process\ProcessBuilder;
 
 function server(
     OutputInterface $output,
-    string $configFile,
+    array $env = [],
     string $address = '127.0.0.1:8000'
 ) {
     $router = realpath(__DIR__ . '/../scripts/router.php');
@@ -32,7 +32,8 @@ function server(
         $router
     ]);
 
-    $builder->setEnv('BERTI_CONFIG', $configFile);
+    $builder->inheritEnvironmentVariables();
+    $builder->addEnvironmentVariables($env);
     $builder->setTimeout(null);
     $process = $builder->getProcess();
     $callback = null;

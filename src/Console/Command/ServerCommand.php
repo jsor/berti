@@ -36,10 +36,16 @@ EOF
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $env = [];
+
+        if ($config = $input->getArgument('config')) {
+            $env['BERTI_CONFIG'] = $config;
+        }
+
         call_user_func(
             $this->server,
             $output,
-            $input->getArgument('config'),
+            $env,
             $input->getArgument('address')
         );
     }
