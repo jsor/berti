@@ -6,13 +6,6 @@ if (ini_get('auto_prepend_file') && !in_array(realpath(ini_get('auto_prepend_fil
 
 $_SERVER = array_merge($_SERVER, $_ENV);
 
-$path = $_SERVER['DOCUMENT_ROOT'];
-$scriptName = ltrim($_SERVER['SCRIPT_NAME'], '/');
-
-if (is_file($path . DIRECTORY_SEPARATOR . $scriptName)) {
-    return false;
-}
-
 function includeIfExists($file)
 {
     return file_exists($file) ? include $file : false;
@@ -26,7 +19,23 @@ if (
     exit(1);
 }
 
-function run($path, $scriptName)
+function sendFile($path, $content = null)
+{
+    $handle = finfo_open(FILEINFO_MIME);
+    $type = finfo_file($handle, $path);
+    finfo_close($handle);
+
+    http_response_code(200);
+    header('Content-Type: ' . $type);
+
+    if (null !== $content) {
+        echo $content;
+    } else {
+        readfile($path);
+    }
+}
+
+function run($path, $scriptName, $buildDir)
 {
     $container = Berti\container();
 
@@ -34,8 +43,6 @@ function run($path, $scriptName)
     if (is_file($configFile)) {
         call_user_func(include $configFile, $container);
     }
-
-    $buildDir = getenv('BERTI_BUILD_DIR') ?: $path;
 
     $documentCollector = $container['document.collector'];
     $documentProcessor = $container['document.processor'];
@@ -76,20 +83,30 @@ function run($path, $scriptName)
             continue;
         }
 
-        $handle = finfo_open(FILEINFO_MIME);
-        $type = finfo_file($handle, $asset->input->getRealPath());
-        finfo_close($handle);
-
-        http_response_code(200);
-        header('Content-Type: ' . $type);
-        echo $assetProcessor($asset, $assets);
+        sendFile(
+            $asset->input->getRealPath(),
+            $assetProcessor($asset, $assets)
+        );
         return;
     }
 
     http_response_code(404);
 }
 
-run($path, $scriptName);
+$path = $_SERVER['DOCUMENT_ROOT'];
+$scriptName = ltrim($_SERVER['SCRIPT_NAME'], '/');
+
+$buildDir = getenv('BERTI_BUILD_DIR') ?: $path;
+
+if (is_file($path . DIRECTORY_SEPARATOR . $scriptName)) {
+    return false;
+}
+
+if (is_file($buildDir . DIRECTORY_SEPARATOR . $scriptName)) {
+    sendFile($buildDir . DIRECTORY_SEPARATOR . $scriptName);
+} else {
+    run($path, $scriptName, $buildDir);
+}
 
 error_log(
     sprintf(
