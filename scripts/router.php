@@ -4,6 +4,8 @@ if (ini_get('auto_prepend_file') && !in_array(realpath(ini_get('auto_prepend_fil
     require ini_get('auto_prepend_file');
 }
 
+$_SERVER = array_merge($_SERVER, $_ENV);
+
 $path = $_SERVER['DOCUMENT_ROOT'];
 $scriptName = ltrim($_SERVER['SCRIPT_NAME'], '/');
 
@@ -27,6 +29,11 @@ if (
 function run($path, $scriptName)
 {
     $container = Berti\container();
+
+    $configFile = getenv('BERTI_CONFIG');
+    if (is_file($configFile)) {
+        call_user_func(include $configFile, $container);
+    }
 
     $documentCollector = $container['document.collector'];
     $documentProcessor = $container['document.processor'];
@@ -90,4 +97,5 @@ error_log(
         http_response_code(),
         $_SERVER['REQUEST_URI']
     ),
-4);
+    4
+);

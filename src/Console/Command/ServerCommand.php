@@ -39,6 +39,7 @@ EOF
         call_user_func(
             $this->server,
             $output,
+            $input->getArgument('config'),
             $input->getArgument('address')
         );
     }
