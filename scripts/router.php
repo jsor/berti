@@ -56,15 +56,16 @@ function run($path, $scriptName, $buildDir)
 
     /** @var \Berti\Document $document */
     foreach ($documents as $document) {
-        $currentScriptName = $scriptName;
+        $currentScriptName = trim($scriptName, '/');
+        $documentPath = str_replace('\\', '/', $document->output->getRelativePathname());
 
-        if ($currentScriptName !== $document->output->getRelativePathname()) {
-            $currentScriptName .= DIRECTORY_SEPARATOR . 'index.html';
+        if ($currentScriptName !== $documentPath) {
+            $currentScriptName .= '/index.html';
         }
 
         $currentScriptName = ltrim($currentScriptName, '/');
 
-        if ($currentScriptName !== $document->output->getRelativePathname()) {
+        if ($currentScriptName !== $documentPath) {
             continue;
         }
 
