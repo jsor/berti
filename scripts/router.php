@@ -60,7 +60,7 @@ function run($path, $scriptName, $buildDir)
         $documentPath = str_replace('\\', '/', $document->output->getRelativePathname());
 
         if ($currentScriptName !== $documentPath) {
-            $currentScriptName .= '/index.html';
+            $currentScriptName .= '/' . $container['output.directory_index'];
         }
 
         $currentScriptName = ltrim($currentScriptName, '/');
