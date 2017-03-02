@@ -42,8 +42,7 @@ EOF
             $env['BERTI_CONFIG'] = $config;
         }
 
-        call_user_func(
-            $this->server,
+        ($this->server)(
             $output,
             $env,
             $input->getArgument('address')

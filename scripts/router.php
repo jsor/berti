@@ -41,7 +41,7 @@ function run($path, $scriptName, $buildDir)
 
     $configFile = getenv('BERTI_CONFIG');
     if (is_file($configFile)) {
-        call_user_func(include $configFile, $container);
+        (include $configFile)($container);
     }
 
     $documentCollector = $container['document.collector'];

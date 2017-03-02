@@ -36,8 +36,7 @@ EOF
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        call_user_func(
-            $this->generator,
+        ($this->generator)(
             $input->getArgument('build-dir'),
             $output
         );

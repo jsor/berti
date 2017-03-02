@@ -53,10 +53,7 @@ function watcher(
         });
     };
 
-    $documents = call_user_func(
-        $documentFinder,
-        getcwd()
-    );
+    $documents = $documentFinder(getcwd());
 
     foreach ($documents as $document) {
         $track($document->getRelativePathname(), $document->getPathname());
@@ -64,10 +61,7 @@ function watcher(
 
     $watcher->track('new', getcwd(), FilesystemEvent::CREATE);
     $watcher->addListener('new', function (FilesystemEvent $event) use ($documentFinder, $track, $build) {
-        $documents = call_user_func(
-            $documentFinder,
-            getcwd()
-        );
+        $documents = $documentFinder(getcwd());
 
         foreach ($documents as $document) {
             if ($document->getPathname() !== (string) $event->getResource()) {

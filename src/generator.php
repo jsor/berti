@@ -30,8 +30,7 @@ function generator(
 
     $output->writeln('Processing assets...');
 
-    $assets = call_user_func(
-        $assetCollector,
+    $assets = $assetCollector(
         getcwd(),
         $buildDir
     );
@@ -43,7 +42,7 @@ function generator(
             $asset->output->getRelativePathname()
         ));
 
-        $content = call_user_func($assetProcessor, $asset, $assets);
+        $content = $assetProcessor($asset, $assets);
 
         $filesystem->dumpFile($asset->output->getPathname(), $content);
 
@@ -54,8 +53,7 @@ function generator(
 
     $output->writeln('Processing documents...');
 
-    $documents = call_user_func(
-        $documentCollector,
+    $documents = $documentCollector(
         getcwd(),
         $buildDir
     );
@@ -67,8 +65,7 @@ function generator(
             $document->output->getRelativePathname()
         ));
 
-        $content = call_user_func(
-            $documentProcessor,
+        $content = $documentProcessor(
             $buildDir,
             $document,
             $documents

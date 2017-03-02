@@ -44,10 +44,6 @@ class Extension extends \Twig_Extension
             $options['cwd'] = $this->cwd;
         }
 
-        return call_user_func(
-            $this->markdownRenderer,
-            $content,
-            $options
-        );
+        return ($this->markdownRenderer)($content, $options);
     }
 }
