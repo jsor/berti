@@ -45,8 +45,7 @@
             "src/pattern.php",
             "src/server.php",
             "src/twig.php",
-            "src/uri.php",
-            "src/watcher.php"
+            "src/uri.php"
         ]
     },
     "autoload-dev": {

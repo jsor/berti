@@ -150,15 +150,6 @@ function container(array $values = []): Container
         return 'Berti\server';
     };
 
-    $container['watcher'] = function () use ($container) {
-        return Partial\bind(
-            'Berti\watcher',
-            $container['generator'],
-            $container['document.finder'],
-            $container['template.theme']
-        );
-    };
-
     $container['console.commands'] = function () use ($container) {
         return [
             new Console\Command\GenerateCommand(
@@ -166,9 +157,6 @@ function container(array $values = []): Container
             ),
             new Console\Command\ServerCommand(
                 $container['server']
-            ),
-            new Console\Command\WatchCommand(
-                $container['watcher']
             )
         ];
     };
