@@ -30,7 +30,7 @@ class MarkdownNode extends \Twig_Node
             ->write('$lines = explode("\n", $content);' . PHP_EOL)
             ->write('$content = preg_replace(\'/^\' . $matches[0]. \'/\', \'\', $lines);' . PHP_EOL)
             ->write('$content = implode("\n", $content);' . PHP_EOL)
-            ->write('echo $this->env->getExtension(\Berti\Twig\Extension::class)->renderMarkdown($content, [' . PHP_EOL)
+            ->write('echo $this->env->getExtension(\Berti\Twig\Extension::class)->markdown($content, [' . PHP_EOL)
             ->indent()
         ;
 
