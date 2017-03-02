@@ -5,7 +5,7 @@ use Symfony\Component\Console\Input\ArgvInput;
 
 set_time_limit(0);
 
-function includeIfExists($file)
+function includeIfExists(string $file)
 {
     return file_exists($file) ? include $file : false;
 }

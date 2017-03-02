@@ -19,9 +19,7 @@ class Document
 
 function document_finder($path): Finder
 {
-    $finder = new Finder();
-
-    return $finder
+    return (new Finder())
         ->name('/\.(markdown|md|mdown)$/')
         ->files()
         ->notPath('/^vendor/')
@@ -48,7 +46,10 @@ function document_collector(
 
         $filename = strtolower($filename);
 
-        $relativePath = ltrim($file->getRelativePath() . DIRECTORY_SEPARATOR . $filename, DIRECTORY_SEPARATOR);
+        $relativePath = ltrim(
+            $file->getRelativePath() . DIRECTORY_SEPARATOR . $filename,
+            DIRECTORY_SEPARATOR
+        );
 
         $outputFile = new SplFileInfo(
             $targetDir . DIRECTORY_SEPARATOR . $relativePath,
@@ -188,7 +189,11 @@ function document_output_rewrite_links_filter(
         return str_replace($matchedUrl, $map[$url] . $hash, $matches[0]);
     };
 
-    $content = preg_replace_callback('/href=(["\']?)(?P<url>.*?)\\1/i', $callback, $content);
+    $content = preg_replace_callback(
+        '/href=(["\']?)(?P<url>.*?)\\1/i',
+        $callback,
+        $content
+    );
 
     return $content;
 }

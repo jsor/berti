@@ -19,9 +19,7 @@ class Asset
 
 function asset_finder(string $path): Finder
 {
-    $finder = new Finder();
-
-    return $finder
+    return (new Finder())
         ->append([]);
 }
 

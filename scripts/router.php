@@ -6,7 +6,7 @@ if (ini_get('auto_prepend_file') && !in_array(realpath(ini_get('auto_prepend_fil
 
 $_SERVER = array_merge($_SERVER, $_ENV);
 
-function includeIfExists($file)
+function includeIfExists(string $file)
 {
     return file_exists($file) ? include $file : false;
 }
@@ -19,7 +19,7 @@ if (
     exit(1);
 }
 
-function sendFile($path, $content = null)
+function sendFile(string $path, string $content = null)
 {
     $handle = finfo_open(FILEINFO_MIME);
     $type = finfo_file($handle, $path);
@@ -35,7 +35,7 @@ function sendFile($path, $content = null)
     }
 }
 
-function run($path, $scriptName, $buildDir)
+function run(string $path, string $scriptName, string $buildDir)
 {
     $container = Berti\container();
 
@@ -49,12 +49,12 @@ function run($path, $scriptName, $buildDir)
     $assetCollector = $container['asset.collector'];
     $assetProcessor = $container['asset.processor'];
 
+    /** @var \Berti\Document[] $documents */
     $documents = $documentCollector(
         $path,
         $buildDir
     );
 
-    /** @var \Berti\Document $document */
     foreach ($documents as $document) {
         $currentScriptName = trim($scriptName, '/');
         $documentPath = str_replace('\\', '/', $document->output->getRelativePathname());
@@ -73,12 +73,13 @@ function run($path, $scriptName, $buildDir)
         echo $documentProcessor($buildDir, $document, $documents);
         return;
     }
+
+    /** @var \Berti\Asset[] $assets */
     $assets = $assetCollector(
         $path,
         $buildDir
     );
 
-    /** @var \Berti\Asset $asset */
     foreach ($assets as $asset) {
         if ($scriptName !== $asset->output->getRelativePathname()) {
             continue;

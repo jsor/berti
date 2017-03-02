@@ -7,8 +7,8 @@ class MarkdownNode extends \Twig_Node
     public function __construct(
         \Twig_Node $body,
         \Twig_Node $options,
-        $lineno,
-        $tag = 'markdown'
+        int $lineno,
+        string $tag = 'markdown'
     ) {
         parent::__construct(
             ['body' => $body, 'options' => $options],

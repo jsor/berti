@@ -12,14 +12,16 @@ function generator(
     callable $assetProcessor,
     string $buildDir,
     OutputInterface $output
-)
-{
+) {
     $filesystem = new Filesystem();
 
     // ---
 
     if (!$filesystem->isAbsolutePath($buildDir)) {
-        $buildDir = uri_canonicalizer(getcwd().DIRECTORY_SEPARATOR.$buildDir, DIRECTORY_SEPARATOR);
+        $buildDir = uri_canonicalizer(
+            getcwd() . DIRECTORY_SEPARATOR.$buildDir,
+            DIRECTORY_SEPARATOR
+        );
     }
 
     $output->writeln(sprintf('<info>Writing build to: %s</info>', $buildDir));

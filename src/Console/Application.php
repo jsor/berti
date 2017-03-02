@@ -12,14 +12,14 @@ class Application extends BaseApplication
 {
     const VERSION = '1.0.0';
 
-    private $commands;
+    private $bertiCommands;
 
     private $workingDir;
     private $configFile;
 
-    public function __construct(array $commands = null)
+    public function __construct(array $bertiCommands = null)
     {
-        $this->commands = $commands;
+        $this->bertiCommands = $bertiCommands;
 
         parent::__construct('Berti', self::VERSION);
     }
@@ -75,8 +75,8 @@ class Application extends BaseApplication
     {
         $commands = parent::getDefaultCommands();
 
-        if ($this->commands) {
-            $commands = array_merge($commands, $this->commands);
+        if ($this->bertiCommands) {
+            $commands = array_merge($commands, $this->bertiCommands);
         }
 
         return $commands;

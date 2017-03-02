@@ -4,7 +4,7 @@ namespace Berti;
 
 use Symfony\Component\Finder\Glob;
 
-function pattern_to_regex($str)
+function pattern_to_regex(string $str): string
 {
     return pattern_is_regex($str) ? $str : Glob::toRegex($str);
 }
@@ -12,7 +12,7 @@ function pattern_to_regex($str)
 /**
  * Taken from Symfony\Component\Finder\Iterator\MultiplePcreFilterIterator
  */
-function pattern_is_regex($str)
+function pattern_is_regex(string $str): bool
 {
     if (preg_match('/^(.{3,}?)[imsxuADU]*$/', $str, $m)) {
         $start = substr($m[1], 0, 1);
