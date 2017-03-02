@@ -12,12 +12,19 @@ class Extension extends \Twig_Extension
         $this->markdownRenderer = $markdownRenderer;
     }
 
+    public function getTokenParsers()
+    {
+        return [
+            new MarkdownTokenParser()
+        ];
+    }
+
     public function getFilters()
     {
         return [
             new \Twig_Filter(
                 'markdown',
-                [$this, 'renderMarkdown'],
+                [$this, 'markdown'],
                 ['is_safe' => ['html']]
             )
         ];
@@ -31,7 +38,7 @@ class Extension extends \Twig_Extension
         return $currentCwd;
     }
 
-    public function renderMarkdown(string $content, array $options = [])
+    public function markdown(string $content, array $options = [])
     {
         if (!array_key_exists('cwd', $options)) {
             $options['cwd'] = $this->cwd;
@@ -42,12 +49,5 @@ class Extension extends \Twig_Extension
             $content,
             $options
         );
-    }
-
-    public function getTokenParsers()
-    {
-        return [
-            new MarkdownTokenParser()
-        ];
     }
 }
