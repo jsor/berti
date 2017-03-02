@@ -59,7 +59,7 @@ class Application extends BaseApplication
                    '<info>Using config file: %s</info>',
                    $configFile
                ));
-            } elseif ('./.berti/config.php' !== $this->configFile) {
+            } elseif ('./berti.config.php' !== $this->configFile) {
                 throw new \RuntimeException('Invalid config file specified.');
             }
         }
@@ -86,7 +86,7 @@ class Application extends BaseApplication
     {
         $definition = parent::getDefaultInputDefinition();
         $definition->addOption(new InputOption('--working-dir', '-d', InputOption::VALUE_REQUIRED, 'If specified, use the given directory as working directory.'));
-        $definition->addOption(new InputOption('--config', '-c', InputOption::VALUE_REQUIRED, 'If specified, read additional configuration from the given config file.', './berti.php'));
+        $definition->addOption(new InputOption('--config', '-c', InputOption::VALUE_REQUIRED, 'If specified, read additional configuration from the given config file.', './berti.config.php'));
 
         return $definition;
     }

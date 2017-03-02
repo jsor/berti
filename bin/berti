@@ -28,7 +28,7 @@ if (is_dir($workingDir)) {
     chdir($workingDir);
 }
 
-$configFile = $input->getParameterOption(array('--config', '-c'), getenv('BERTI_CONFIG') ?: './.berti/config.php');
+$configFile = $input->getParameterOption(array('--config', '-c'), getenv('BERTI_CONFIG') ?: './berti.config.php');
 if (is_file($configFile)) {
     (include $configFile)($container);
 }
