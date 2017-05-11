@@ -19,31 +19,40 @@ if (
     exit(1);
 }
 
-function sendFile(string $path, string $content = null)
-{
-    $handle = finfo_open(FILEINFO_MIME);
-    $type = finfo_file($handle, $path);
-    finfo_close($handle);
+$container = Berti\container();
 
-    http_response_code(200);
-    header('Content-Type: ' . $type);
-
-    if (null !== $content) {
-        echo $content;
-    } else {
-        readfile($path);
-    }
+$configFile = getenv('BERTI_CONFIG');
+if (is_file($configFile)) {
+    (include $configFile)($container);
 }
 
-function run(string $path, string $scriptName, string $buildDir)
+function send(callable $mimeTypeDetector, SplFileInfo $file, string $content)
 {
-    $container = Berti\container();
+    http_response_code(200);
 
-    $configFile = getenv('BERTI_CONFIG');
-    if (is_file($configFile)) {
-        (include $configFile)($container);
-    }
+    header(
+        sprintf(
+            'Content-Type: %s',
+            $mimeTypeDetector($file, $content)
+        )
+    );
 
+    header(
+        sprintf(
+            'Content-Length: %d',
+            strlen($content)
+        )
+    );
+
+    echo $content;
+}
+
+function run(
+    Pimple\Container $container,
+    string $path,
+    string $scriptName,
+    string $buildDir
+) {
     $documentCollector = $container['document.collector'];
     $documentProcessor = $container['document.processor'];
     $assetCollector = $container['asset.collector'];
@@ -69,8 +78,11 @@ function run(string $path, string $scriptName, string $buildDir)
             continue;
         }
 
-        http_response_code(200);
-        echo $documentProcessor($buildDir, $document, $documents);
+        send(
+            $container['mime_type.detector'],
+            $document->output,
+            $documentProcessor($buildDir, $document, $documents)
+        );
         return;
     }
 
@@ -85,8 +97,9 @@ function run(string $path, string $scriptName, string $buildDir)
             continue;
         }
 
-        sendFile(
-            $asset->input->getRealPath(),
+        send(
+            $container['mime_type.detector'],
+            $asset->output,
             $assetProcessor($asset, $assets)
         );
         return;
@@ -104,10 +117,16 @@ if (is_file($path . DIRECTORY_SEPARATOR . $scriptName)) {
     return false;
 }
 
-if (is_file($buildDir . DIRECTORY_SEPARATOR . $scriptName)) {
-    sendFile($buildDir . DIRECTORY_SEPARATOR . $scriptName);
+$file = new SplFileInfo($buildDir . DIRECTORY_SEPARATOR . $scriptName);
+
+if ($file->isFile()) {
+    send(
+        $container['mime_type.detector'],
+        $file,
+        file_get_contents($file->getRealPath())
+    );
 } else {
-    run($path, $scriptName, $buildDir);
+    run($container, $path, $scriptName, $buildDir);
 }
 
 error_log(

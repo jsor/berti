@@ -136,6 +136,63 @@ function container(array $values = []): Container
         );
     };
 
+    $container['mime_type.map'] = function () {
+        return [
+            'atom' => 'application/atom+xml',
+            'json' => 'application/json',
+            'rss' => 'application/rss+xml',
+            'rdf' => 'application/xml',
+            'xml' => 'application/xml',
+
+            'js' => 'application/javascript',
+            'css' => 'text/css',
+
+            'webmanifest' => 'application/manifest+json',
+            'webapp' => 'application/x-web-app-manifest+json',
+            'appcache' => 'text/cache-manifest',
+
+            'bmp' => 'image/bmp',
+            'gif' => 'image/gif',
+            'jpe' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'jpg' => 'image/jpeg',
+            'png' => 'image/png',
+            'svg' => 'image/svg+xml',
+            'svgz' => 'image/svg+xml',
+
+            'cur' => 'image/x-icon',
+            'ico' => 'image/x-icon',
+
+            'htm' => 'text/html',
+            'html' => 'text/html',
+
+            'eot' => 'application/vnd.ms-fontobject',
+            'otf' => 'font/opentype',
+            'ttf' => 'application/x-font-ttf',
+            'woff' => 'application/font-woff',
+            'woff2' => 'application/font-woff2',
+        ];
+    };
+    $container['mime_type.detector'] = function () use ($container) {
+        return function (\SplFileInfo $file, $content) use ($container) {
+            $mimeType = 'text/plain';
+            $ext = strtolower($file->getExtension());
+
+            if (isset($container['mime_type.map'][$ext])) {
+                $mimeType = $container['mime_type.map'][$ext];
+            }
+
+            if (
+                0 === stripos($mimeType, 'text/') &&
+                false === stripos($mimeType, 'charset=')
+            ) {
+                $mimeType .= '; charset=utf-8';
+            }
+
+            return $mimeType;
+        };
+    };
+
     $container['generator'] = function () use ($container) {
         return Partial\bind(
             'Berti\generator',
