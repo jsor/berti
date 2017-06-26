@@ -164,7 +164,7 @@ function document_output_rewrite_links_filter(
         );
     }
 
-    $callback = function ($matches) use ($document, $documentCollection, $fallbackUrlGenerator, $map) {
+    $callback = function ($matches) use ($document, $fallbackUrlGenerator, $map) {
         $matchedUrl = trim($matches['url']);
 
         if (
