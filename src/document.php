@@ -150,7 +150,8 @@ function document_title_extractor(string $content): string
 function document_output_rewrite_links_filter(
     string $content,
     Document $document,
-    array $documentCollection
+    array $documentCollection,
+    callable $fallbackUrlGenerator = null // @TODO Make first parameter in next major version
 ): string
 {
     $map = [];
@@ -163,8 +164,16 @@ function document_output_rewrite_links_filter(
         );
     }
 
-    $callback = function ($matches) use ($document, $map) {
+    $callback = function ($matches) use ($document, $documentCollection, $fallbackUrlGenerator, $map) {
         $matchedUrl = trim($matches['url']);
+
+        if (
+            (isset($matchedUrl[0])  && '/' === $matchedUrl[0]) ||
+            false !== strpos($matchedUrl, '://') ||
+            0 === strpos($matchedUrl, 'data:')
+        ) {
+            return $matches[0];
+        }
 
         $url = uri_rewriter(
             $matchedUrl,
@@ -175,10 +184,21 @@ function document_output_rewrite_links_filter(
         $hash = '';
 
         if (false !== strpos($url, '#')) {
-            list($url, $hash) = explode('#', $url);
+            list($url, $hash) = explode('#', $url, 2);
         }
 
-        if (!isset($map[$url])) {
+        $newUrl = $map[$url] ?? null;
+
+        if (!$newUrl && $fallbackUrlGenerator) {
+            $newUrl = $fallbackUrlGenerator(
+                $matchedUrl,
+                [
+                    'cwd' => dirname($document->input->getRealPath())
+                ]
+            );
+        }
+
+        if (!$newUrl) {
             return $matches[0];
         }
 
@@ -186,7 +206,7 @@ function document_output_rewrite_links_filter(
             $hash = '#' . $hash;
         }
 
-        return str_replace($matchedUrl, $map[$url] . $hash, $matches[0]);
+        return str_replace($matchedUrl, $newUrl . $hash, $matches[0]);
     };
 
     $content = preg_replace_callback(

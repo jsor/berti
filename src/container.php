@@ -76,6 +76,12 @@ function container(array $values = []): Container
             $container['github.repository_detector']
         );
     };
+    $container['github.url.generator'] = function () use ($container) {
+        return Partial\bind(
+            'Berti\github_url_generator',
+            $container['github.repository_detector']
+        );
+    };
 
     $container['markdown.renderer'] = function () use ($container) {
         return $container['github.markdown.renderer'];
@@ -101,8 +107,8 @@ function container(array $values = []): Container
             $container['template.map']
         );
     };
-    $container['document.filter'] = $container->protect(function ($content, $document, array $documentCollection) {
-        $content = document_output_rewrite_links_filter($content, $document, $documentCollection);
+    $container['document.filter'] = $container->protect(function ($content, $document, array $documentCollection) use ($container) {
+        $content = document_output_rewrite_links_filter($content, $document, $documentCollection, $container['github.url.generator']);
         $content = document_output_remove_github_anchor_prefix_filter($content);
 
         return $content;

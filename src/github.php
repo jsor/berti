@@ -33,6 +33,39 @@ function github_markdown_renderer(
     );
 }
 
+function github_url_generator(
+    callable $repositoryDetector,
+    $url,
+    array $options = []
+): string
+{
+    $repository = null;
+
+    if (array_key_exists('repo', $options)) {
+        $repository = $options['repo'];
+    }
+
+    if (array_key_exists('repository', $options)) {
+        $repository = $options['repository'];
+    }
+
+    if (!$repository) {
+        $repository = $repositoryDetector($options['cwd'] ?? null) ?: null;
+    }
+
+    if (!$repository) {
+        return '';
+    }
+
+    $process = new Process('git rev-parse HEAD', $options['cwd'] ?? null);
+    $process->run();
+
+    $commit = $process->getOutput();
+
+    // Always use /blob as github redirects to /tree for directories
+    return 'https://github.com/' . $repository . '/blob/' . $commit . '/' . ltrim($url, '/');
+}
+
 function github_repository_detector($remote, string $cwd = null): string
 {
     $process = new Process('git remote -v', $cwd ?: null);
