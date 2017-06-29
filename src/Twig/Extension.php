@@ -12,14 +12,14 @@ class Extension extends \Twig_Extension
         $this->markdownRenderer = $markdownRenderer;
     }
 
-    public function getTokenParsers()
+    public function getTokenParsers(): array
     {
         return [
             new MarkdownTokenParser()
         ];
     }
 
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new \Twig_Filter(
@@ -30,7 +30,7 @@ class Extension extends \Twig_Extension
         ];
     }
 
-    public function setCwd(string $cwd = null)
+    public function setCwd(string $cwd = null): ?string
     {
         $currentCwd = $this->cwd;
         $this->cwd = $cwd;
@@ -38,7 +38,7 @@ class Extension extends \Twig_Extension
         return $currentCwd;
     }
 
-    public function markdown(string $content, array $options = [])
+    public function markdown(string $content, array $options = []): string
     {
         if (!array_key_exists('cwd', $options)) {
             $options['cwd'] = $this->cwd;

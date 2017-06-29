@@ -4,7 +4,7 @@ namespace Berti\Twig;
 
 class MarkdownTokenParser extends \Twig_TokenParser
 {
-    public function parse(\Twig_Token $token)
+    public function parse(\Twig_Token $token): MarkdownNode
     {
         $lineno = $token->getLine();
         $stream = $this->parser->getStream();
@@ -50,7 +50,7 @@ class MarkdownTokenParser extends \Twig_TokenParser
         );
     }
 
-    public function getTag()
+    public function getTag(): string
     {
         return 'markdown';
     }

@@ -44,7 +44,7 @@ function github_markdown_renderer(
     return $html;
 }
 
-function github_repository_detector(string $remote, string $cwd = null): string
+function github_repository_detector(string $remote, string $cwd = null): ?string
 {
     $process = new Process('git remote -v', $cwd ?: null);
     $process->run();
@@ -74,5 +74,5 @@ function github_repository_detector(string $remote, string $cwd = null): string
         return $path;
     }
 
-    return '';
+    return null;
 }

@@ -18,12 +18,16 @@ class GenerateCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('generate')
             ->setDefinition([
-                new InputArgument('build-dir', InputArgument::REQUIRED, 'Path to the build directory')
+                new InputArgument(
+                    'build-dir',
+                    InputArgument::REQUIRED,
+                    'Path to the build directory'
+                )
             ])
             ->setDescription('Generates the documentation')
             ->setHelp(<<<EOF
@@ -34,7 +38,10 @@ EOF
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(
+        InputInterface $input,
+        OutputInterface $output
+    ): void
     {
         ($this->generator)(
             $input->getArgument('build-dir'),

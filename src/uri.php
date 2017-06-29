@@ -2,7 +2,11 @@
 
 namespace Berti;
 
-function uri_rewriter(string $url, string $sourceFile, string $targetFile): string
+function uri_rewriter(
+    string $url,
+    string $sourceFile,
+    string $targetFile
+): string
 {
     // First check also matches protocol-relative urls like //example.com
     if (

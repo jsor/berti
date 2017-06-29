@@ -23,7 +23,11 @@ function asset_finder(string $path): Finder
         ->append([]);
 }
 
-function asset_collector(callable $finder, string $path, string $targetDir): array
+function asset_collector(
+    callable $finder,
+    string $path,
+    string $targetDir
+): array
 {
     $assets = [];
 
@@ -42,7 +46,11 @@ function asset_collector(callable $finder, string $path, string $targetDir): arr
     return $assets;
 }
 
-function asset_processor(callable $outputFilter, Asset $asset, array $assetCollection): string
+function asset_processor(
+    callable $outputFilter,
+    Asset $asset,
+    array $assetCollection
+): string
 {
     return $outputFilter($asset->input->getContents(), $asset, $assetCollection);
 }

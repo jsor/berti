@@ -18,7 +18,7 @@ class ServerCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('server')
@@ -34,7 +34,10 @@ EOF
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(
+        InputInterface $input,
+        OutputInterface $output
+    ): void
     {
         $env = [];
 

@@ -6,9 +6,13 @@ if (ini_get('auto_prepend_file') && !in_array(realpath(ini_get('auto_prepend_fil
 
 $_SERVER = array_merge($_SERVER, $_ENV);
 
-function includeIfExists(string $file)
+function includeIfExists(string $file): bool
 {
-    return file_exists($file) ? include $file : false;
+    if (!file_exists($file)) {
+        return false;
+    }
+
+    return (bool) include $file;
 }
 
 if (
@@ -26,7 +30,11 @@ if (is_file($configFile)) {
     (include $configFile)($container);
 }
 
-function send(callable $mimeTypeDetector, SplFileInfo $file, string $content)
+function send(
+    callable $mimeTypeDetector,
+    SplFileInfo $file,
+    string $content
+): void
 {
     http_response_code(200);
 
@@ -52,7 +60,8 @@ function run(
     string $path,
     string $scriptName,
     string $buildDir
-) {
+): void
+{
     $documentCollector = $container['document.collector'];
     $documentProcessor = $container['document.processor'];
     $assetCollector = $container['asset.collector'];

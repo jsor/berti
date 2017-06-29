@@ -18,7 +18,7 @@ class MarkdownNode extends \Twig_Node
         );
     }
 
-    public function compile(\Twig_Compiler $compiler)
+    public function compile(\Twig_Compiler $compiler): void
     {
         $compiler->addDebugInfo($this);
 

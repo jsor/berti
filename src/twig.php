@@ -9,7 +9,8 @@ function twig_renderer(
     string $name,
     array $context = [],
     string $cwd = null
-): string {
+): string
+{
     $currentCwd = null;
 
     if ($twig->hasExtension(Extension::class)) {

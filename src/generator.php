@@ -12,7 +12,8 @@ function generator(
     callable $assetProcessor,
     string $buildDir,
     OutputInterface $output
-) {
+): void
+{
     $filesystem = new Filesystem();
 
     // ---
