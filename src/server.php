@@ -14,7 +14,7 @@ function server(
     string $address = '127.0.0.1:8000'
 ): int
 {
-    $router = realpath(__DIR__ . '/../scripts/router.php');
+    $router = realpath(dirname(__DIR__) . '/scripts/router.php');
 
     $finder = new PhpExecutableFinder();
 
