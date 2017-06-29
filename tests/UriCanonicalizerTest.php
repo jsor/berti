@@ -9,14 +9,14 @@ class UriCanonicalizerTest extends TestCase
     /**
      * @dataProvider provideUrls
      */
-    public function testUrls($inputUrl, $expectedUrl, $separator)
+    public function testUrls(string $inputUrl, string $expectedUrl, string $separator)
     {
         $canonicalized = uri_canonicalizer($inputUrl, $separator);
 
         self::assertEquals($expectedUrl, $canonicalized);
     }
 
-    public function provideUrls()
+    public function provideUrls(): array
     {
         return [
             ['reference/../reference/article.html', 'reference/article.html', '/'],

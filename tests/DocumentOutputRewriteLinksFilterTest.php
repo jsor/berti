@@ -10,7 +10,13 @@ class DocumentOutputRewriteLinksFilterTest extends TestCase
     /**
      * @dataProvider provideUrls
      */
-    public function testUrls($format, $document, $documentCollection, $inputUrl, $expectedUrl)
+    public function testUrls(
+        string $format,
+        Document $document,
+        array $documentCollection,
+        string $inputUrl,
+        string $expectedUrl
+    )
     {
         $content = sprintf($format, $inputUrl);
 
@@ -19,7 +25,7 @@ class DocumentOutputRewriteLinksFilterTest extends TestCase
         self::assertEquals(sprintf($format, $expectedUrl), $filtered, 'document_output_rewrite_links_filter() rewrites relative urls');
     }
 
-    public function provideUrls()
+    public function provideUrls(): array
     {
         $document = new Document(
             new SplFileInfo(
@@ -94,16 +100,24 @@ class DocumentOutputRewriteLinksFilterTest extends TestCase
     /**
      * @dataProvider provideMultipleUrls
      */
-   public function testMultipleUrls($format, $sourceFile, $destFile, $inputUrl1, $inputUrl2, $expectedUrl1, $expectedUrl2)
+    public function testMultipleUrls(
+        string $format,
+        Document $document,
+        array $documentCollection,
+        string $inputUrl1,
+        string $inputUrl2,
+        string $expectedUrl1,
+        string $expectedUrl2
+    )
     {
         $content = sprintf($format, $inputUrl1, $inputUrl2);
 
-        $filtered = document_output_rewrite_links_filter($content, $sourceFile, $destFile, null);
+        $filtered = document_output_rewrite_links_filter($content, $document, $documentCollection);
 
         self::assertEquals(sprintf($format, $expectedUrl1, $expectedUrl2), $filtered, 'document_output_rewrite_links_filter() rewrites relative urls');
     }
 
-    public function provideMultipleUrls()
+    public function provideMultipleUrls(): array
     {
         $document = new Document(
             new SplFileInfo(

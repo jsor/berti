@@ -9,14 +9,14 @@ class UriRewriterTest extends TestCase
     /**
      * @dataProvider provideUrls
      */
-    public function testUrls($sourceFile, $targetFile, $inputUrl, $expectedUrl)
+    public function testUrls(string $sourceFile, string $targetFile, string $inputUrl, string $expectedUrl)
     {
         $filtered = uri_rewriter($inputUrl, $sourceFile, $targetFile);
 
         self::assertEquals($expectedUrl, $filtered, 'rewrite_url() rewrites relative urls');
     }
 
-    public function provideUrls()
+    public function provideUrls(): array
     {
         return [
             // path diffs
