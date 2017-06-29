@@ -33,7 +33,6 @@ function server(
         $router
     ]);
 
-    $builder->inheritEnvironmentVariables();
     $builder->addEnvironmentVariables($env);
     $builder->setTimeout(null);
     $process = $builder->getProcess();
