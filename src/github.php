@@ -26,11 +26,22 @@ function github_markdown_renderer(
         $repository = $repositoryDetector($options['cwd'] ?? null) ?: null;
     }
 
-    return $client->api('markdown')->render(
+    $html = $client->api('markdown')->render(
         $content,
         'markdown',
         $repository
     );
+
+    $html = strtr(
+        $html,
+        [
+            'href="#user-content-' => 'href="#',
+            'name="user-content-' => 'name="',
+            'id="user-content-' => 'id="'
+        ]
+    );
+
+    return $html;
 }
 
 function github_repository_detector(string $remote, string $cwd = null): string

@@ -197,12 +197,3 @@ function document_output_rewrite_links_filter(
 
     return $content;
 }
-
-function document_output_remove_github_anchor_prefix_filter(string $content): string
-{
-    $content = str_replace('href="#user-content-', 'href="#', $content);
-    $content = str_replace('name="user-content-', 'name="', $content);
-    $content = str_replace('id="user-content-', 'id="', $content);
-
-    return $content;
-}
