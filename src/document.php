@@ -17,7 +17,7 @@ class Document
     }
 }
 
-function document_finder($path): Finder
+function document_finder(string $path): Finder
 {
     return (new Finder())
         ->name('/\.(markdown|md|mdown)$/')

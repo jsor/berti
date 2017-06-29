@@ -8,7 +8,7 @@ use Symfony\Component\Process\Process;
 function github_markdown_renderer(
     Github\Client $client,
     callable $repositoryDetector,
-    $content,
+    string $content,
     array $options = []
 ): string
 {
@@ -33,7 +33,7 @@ function github_markdown_renderer(
     );
 }
 
-function github_repository_detector($remote, string $cwd = null): string
+function github_repository_detector(string $remote, string $cwd = null): string
 {
     $process = new Process('git remote -v', $cwd ?: null);
     $process->run();
