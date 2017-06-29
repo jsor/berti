@@ -175,7 +175,7 @@ function document_output_rewrite_links_filter(
         $hash = '';
 
         if (false !== strpos($url, '#')) {
-            list($url, $hash) = explode('#', $url);
+            [$url, $hash] = explode('#', $url);
         }
 
         if (!isset($map[$url])) {

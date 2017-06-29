@@ -202,7 +202,7 @@ function container(array $values = []): Container
         );
     };
 
-    $container['server'] = function () use ($container) {
+    $container['server'] = function () {
         return 'Berti\server';
     };
 

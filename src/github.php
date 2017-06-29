@@ -60,8 +60,8 @@ function github_repository_detector(string $remote, string $cwd = null): ?string
             continue;
         }
 
-        list(, $second) = explode("\t", $line, 2);
-        list($url) = explode(' ', $second, 2);
+        $second = explode("\t", $line, 2)[1];
+        $url = explode(' ', $second, 2)[0];
         $url = str_replace('git@', '', $url);
         $parts = parse_url($url);
 
