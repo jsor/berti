@@ -44,6 +44,7 @@ EOF
     ): void
     {
         ($this->generator)(
+            getcwd(),
             $input->getArgument('build-dir'),
             $output
         );

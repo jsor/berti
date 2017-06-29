@@ -10,6 +10,7 @@ function generator(
     callable $documentProcessor,
     callable $assetCollector,
     callable $assetProcessor,
+    string $srcDir,
     string $buildDir,
     OutputInterface $output
 ): void
@@ -20,7 +21,7 @@ function generator(
 
     if (!$filesystem->isAbsolutePath($buildDir)) {
         $buildDir = uri_canonicalizer(
-            getcwd() . DIRECTORY_SEPARATOR.$buildDir,
+            $srcDir . DIRECTORY_SEPARATOR.$buildDir,
             DIRECTORY_SEPARATOR
         );
     }
@@ -34,7 +35,7 @@ function generator(
     $output->writeln('Processing assets...');
 
     $assets = $assetCollector(
-        getcwd(),
+        $srcDir,
         $buildDir
     );
 
@@ -57,7 +58,7 @@ function generator(
     $output->writeln('Processing documents...');
 
     $documents = $documentCollector(
-        getcwd(),
+        $srcDir,
         $buildDir
     );
 
