@@ -56,6 +56,9 @@ function container(array $values = []): Container
             'origin'
         );
     };
+    $container['github.url_generator'] = function () {
+        return 'Berti\github_url_generator';
+    };
     $container['github.client'] = function () {
         $client = new Github\Client();
 
@@ -73,7 +76,8 @@ function container(array $values = []): Container
         return Partial\bind(
             'Berti\github_markdown_renderer',
             $container['github.client'],
-            $container['github.repository_detector']
+            $container['github.repository_detector'],
+            $container['github.url_generator']
         );
     };
 
