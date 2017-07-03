@@ -74,10 +74,9 @@ function document_processor(
 ): string
 {
     $content = $markdownRenderer(
-        $document->input->getContents(),
-        [
-            'cwd' => dirname($document->input->getRealPath())
-        ]
+        $document,
+        $documentCollection,
+        $document->input->getContents()
     );
 
     $context = [
@@ -97,8 +96,7 @@ function document_processor(
 
     $rendered = $templateRenderer(
         $template,
-        ['berti' => $context],
-        dirname($document->input->getRealPath())
+        ['berti' => $context]
     );
 
     return $outputFilter($rendered, $document, $documentCollection);

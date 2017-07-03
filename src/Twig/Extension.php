@@ -5,7 +5,6 @@ namespace Berti\Twig;
 class Extension extends \Twig_Extension
 {
     private $markdownRenderer;
-    private $cwd;
 
     public function __construct(callable $markdownRenderer)
     {
@@ -25,25 +24,20 @@ class Extension extends \Twig_Extension
             new \Twig_Filter(
                 'markdown',
                 [$this, 'markdown'],
-                ['is_safe' => ['html']]
+                [
+                    'is_safe' => ['html'],
+                    'needs_context' => true
+                ]
             )
         ];
     }
 
-    public function setCwd(string $cwd = null): ?string
+    public function markdown(array $twigContext, string $content): string
     {
-        $currentCwd = $this->cwd;
-        $this->cwd = $cwd;
-
-        return $currentCwd;
-    }
-
-    public function markdown(string $content, array $options = []): string
-    {
-        if (!array_key_exists('cwd', $options)) {
-            $options['cwd'] = $this->cwd;
-        }
-
-        return ($this->markdownRenderer)($content, $options);
+        return ($this->markdownRenderer)(
+            $twigContext['berti']['document'],
+            $twigContext['berti']['documents'],
+            $content
+        );
     }
 }

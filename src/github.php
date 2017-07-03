@@ -8,23 +8,12 @@ use Symfony\Component\Process\Process;
 function github_markdown_renderer(
     Github\Client $client,
     callable $repositoryDetector,
-    string $content,
-    array $options = []
+    Document $document,
+    array $documentCollection,
+    string $content
 ): string
 {
-    $repository = null;
-
-    if (array_key_exists('repo', $options)) {
-        $repository = $options['repo'];
-    }
-
-    if (array_key_exists('repository', $options)) {
-        $repository = $options['repository'];
-    }
-
-    if (!$repository) {
-        $repository = $repositoryDetector($options['cwd'] ?? null) ?: null;
-    }
+    $repository = $repositoryDetector(dirname($document->input->getRealPath())) ?: null;
 
     $html = $client->api('markdown')->render(
         $content,
