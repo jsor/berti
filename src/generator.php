@@ -72,7 +72,8 @@ function generator(
         $content = $documentProcessor(
             $buildDir,
             $document,
-            $documents
+            $documents,
+            $assets
         );
 
         $filesystem->dumpFile($document->output->getPathname(), $content);

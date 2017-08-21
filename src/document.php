@@ -70,12 +70,14 @@ function document_processor(
     callable $outputFilter,
     string $buildDir,
     Document $document,
-    array $documentCollection
+    array $documentCollection,
+    array $assetCollection
 ): string
 {
     $content = $markdownRenderer(
         $document,
         $documentCollection,
+        $assetCollection,
         $document->input->getContents()
     );
 

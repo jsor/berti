@@ -37,6 +37,7 @@ class Extension extends \Twig_Extension
         return ($this->markdownRenderer)(
             $twigContext['berti']['document'],
             $twigContext['berti']['documents'],
+            $twigContext['berti']['assets'],
             $content
         );
     }

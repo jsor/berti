@@ -11,6 +11,7 @@ function github_markdown_renderer(
     callable $urlGenerator,
     Document $document,
     array $documentCollection,
+    array $assetCollection,
     string $content
 ): string
 {
@@ -35,6 +36,7 @@ function github_markdown_renderer(
         $urlGenerator,
         $document,
         $documentCollection,
+        $assetCollection,
         $repository,
         $html
     );
@@ -46,11 +48,32 @@ function github_relative_to_absolute_link_converter(
     callable $urlGenerator,
     Document $document,
     array $documentCollection,
+    array $assetCollection,
     string $repository,
     string $html
 ): string
 {
     $map = [];
+
+    foreach ($assetCollection as $asset) {
+        $map[$asset->input->getRelativePathname()] = uri_rewriter(
+            $asset->output->getRelativePathname(),
+            '/',
+            $document->output->getRelativePathname()
+        );
+
+        if ('index.html' === $asset->output->getBasename()) {
+            $dirName = dirname($asset->input->getRelativePathname());
+            $uri = uri_rewriter(
+                dirname($asset->output->getRelativePathname()),
+                '/',
+                $document->output->getRelativePathname()
+            );
+
+            $map[$dirName] = $uri;
+            $map[$dirName . '/'] = $uri;
+        }
+    }
 
     foreach ($documentCollection as $doc) {
         $map[$doc->input->getRelativePathname()] = uri_rewriter(
