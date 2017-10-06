@@ -148,7 +148,7 @@ function document_title_extractor(string $content): string
     return '';
 }
 
-function document_output_rewrite_links_filter(
+function document_output_link_rewriter(
     string $content,
     Document $document,
     array $documentCollection

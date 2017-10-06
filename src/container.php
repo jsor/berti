@@ -106,7 +106,7 @@ function container(array $values = []): Container
         );
     };
     $container['document.filter'] = function () {
-        return 'Berti\document_output_rewrite_links_filter';
+        return 'Berti\document_output_link_rewriter';
     };
     $container['document.processor'] = function () use ($container) {
         return Partial\bind(

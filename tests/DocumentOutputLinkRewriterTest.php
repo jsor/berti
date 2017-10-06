@@ -5,7 +5,7 @@ namespace Berti;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\SplFileInfo;
 
-class DocumentOutputRewriteLinksFilterTest extends TestCase
+class DocumentOutputLinkRewriterTest extends TestCase
 {
     /**
      * @dataProvider provideUrls
@@ -20,9 +20,9 @@ class DocumentOutputRewriteLinksFilterTest extends TestCase
     {
         $content = sprintf($format, $inputUrl);
 
-        $filtered = document_output_rewrite_links_filter($content, $document, $documentCollection);
+        $filtered = document_output_link_rewriter($content, $document, $documentCollection);
 
-        self::assertEquals(sprintf($format, $expectedUrl), $filtered, 'document_output_rewrite_links_filter() rewrites relative urls');
+        self::assertEquals(sprintf($format, $expectedUrl), $filtered, 'document_output_link_rewriter() rewrites relative urls');
     }
 
     public function provideUrls(): array
@@ -112,9 +112,9 @@ class DocumentOutputRewriteLinksFilterTest extends TestCase
     {
         $content = sprintf($format, $inputUrl1, $inputUrl2);
 
-        $filtered = document_output_rewrite_links_filter($content, $document, $documentCollection);
+        $filtered = document_output_link_rewriter($content, $document, $documentCollection);
 
-        self::assertEquals(sprintf($format, $expectedUrl1, $expectedUrl2), $filtered, 'document_output_rewrite_links_filter() rewrites relative urls');
+        self::assertEquals(sprintf($format, $expectedUrl1, $expectedUrl2), $filtered, 'document_output_link_rewriter() rewrites relative urls');
     }
 
     public function provideMultipleUrls(): array
