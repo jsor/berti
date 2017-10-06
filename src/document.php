@@ -86,6 +86,7 @@ function document_processor(
         'title' => document_title_extractor($content),
         'document' => $document,
         'documents' => $documentCollection,
+        'assets' => $assetCollection,
         'build_dir' => $buildDir,
         'relative_root' => uri_rewriter(
             '',
