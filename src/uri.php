@@ -113,12 +113,27 @@ function uri_canonicalizer(string $path, string $separator = '/'): string
     $path = str_replace(['\\', '/'], $separator, $path);
 
     $first = '';
-    if ($separator === $path[0]) {
+
+    // Protocol relative url, starting with exactly 2 /
+    if (0 === strpos($path, '//') && (!isset($path[2]) || $path[2] !== $separator)) {
+        $first = $separator . $separator;
+        $path = (string) substr($path, 2);
+    // Absolute url
+    } elseif (false !== strpos($path, '://')) {
+        list($first, $path) = explode('://', $path, 2);
+        $first .= '://';
+    } elseif ($separator === $path[0]) {
         $first = $separator;
-        $path = substr($path, 1);
+        $path = (string) substr($path, 1);
     }
 
     $parts = array_filter(explode($separator, $path));
+
+    // Ensure trailing / is preserved
+    if (substr($path, -strlen($separator)) === $separator) {
+        $parts[] = '';
+    }
+
     $canonicalized = [];
     $startDrop = '' !== $first;
     $dropNextCounter = 0;

@@ -36,7 +36,18 @@ class UriCanonicalizerTest extends TestCase
 
             // Invalid urls
             ['/../article.html', '/', '/'],
+            ['///../article.html', '/', '/'],
             ['/folder/../../article.html', '/', '/'],
+
+            // Absolute urls
+            ['http://www.example.com/', 'http://www.example.com/', '/'],
+            ['http://www.example.com', 'http://www.example.com', '/'],
+            ['http://www.example.com/reference/../reference/article.html', 'http://www.example.com/reference/article.html', '/'],
+
+            // Protocol relative urls
+            ['//www.example.com/', '//www.example.com/', '/'],
+            ['//www.example.com', '//www.example.com', '/'],
+            ['//www.example.com/reference/../reference/article.html', '//www.example.com/reference/article.html', '/'],
         ];
     }
 }
