@@ -105,11 +105,9 @@ function container(array $values = []): Container
             $container['template.map']
         );
     };
-    $container['document.filter'] = $container->protect(function ($content, $document, array $documentCollection) {
-        $content = document_output_rewrite_links_filter($content, $document, $documentCollection);
-
-        return $content;
-    });
+    $container['document.filter'] = function () {
+        return 'Berti\document_output_rewrite_links_filter';
+    };
     $container['document.processor'] = function () use ($container) {
         return Partial\bind(
             'Berti\document_processor',
@@ -129,9 +127,11 @@ function container(array $values = []): Container
             $container['asset.finder']
         );
     };
-    $container['asset.filter'] = $container->protect(function ($content, $asset, array $assetCollection) {
-        return $content;
-    });
+    $container['asset.filter'] = function () {
+        return function ($content, $asset, array $assetCollection) {
+            return $content;
+        };
+    };
     $container['asset.processor'] = function () use ($container) {
         return Partial\bind(
             'Berti\asset_processor',
