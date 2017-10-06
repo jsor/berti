@@ -73,6 +73,12 @@ function run(
         $buildDir
     );
 
+    /** @var \Berti\Asset[] $assets */
+    $assets = $assetCollector(
+        $path,
+        $buildDir
+    );
+
     foreach ($documents as $document) {
         $currentScriptName = trim($scriptName, '/');
         $documentPath = str_replace('\\', '/', $document->output->getRelativePathname());
@@ -90,16 +96,10 @@ function run(
         send(
             $container['mime_type.detector'],
             $document->output,
-            $documentProcessor($buildDir, $document, $documents)
+            $documentProcessor($buildDir, $document, $documents, $assets)
         );
         return;
     }
-
-    /** @var \Berti\Asset[] $assets */
-    $assets = $assetCollector(
-        $path,
-        $buildDir
-    );
 
     foreach ($assets as $asset) {
         if ($scriptName !== $asset->output->getRelativePathname()) {
