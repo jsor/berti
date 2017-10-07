@@ -23,6 +23,13 @@ class ServerCommand extends Command
         $this
             ->setName('server')
             ->setDefinition([
+                new InputArgument(
+                    'build-dir',
+                    InputArgument::REQUIRED,
+                    'Path to the build directory'
+                )
+            ])
+            ->setDefinition([
                 new InputArgument('address', InputArgument::OPTIONAL, 'Address:port', '127.0.0.1:8000')
             ])
             ->setDescription('Runs PHP\'s built-in web server')
@@ -39,15 +46,10 @@ EOF
         OutputInterface $output
     ): void
     {
-        $env = [];
-
-        if ($config = $input->getArgument('config')) {
-            $env['BERTI_CONFIG'] = $config;
-        }
-
         ($this->server)(
+            getcwd(),
+            $input->getArgument('build-dir'),
             $output,
-            $env,
             $input->getArgument('address')
         );
     }

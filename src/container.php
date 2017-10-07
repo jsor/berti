@@ -192,7 +192,7 @@ function container(array $values = []): Container
         ];
     };
     $container['mime_type.detector'] = function () use ($container) {
-        return function (\SplFileInfo $file, $content) use ($container) {
+        return function (\SplFileInfo $file) use ($container) {
             $mimeType = 'text/plain';
             $ext = strtolower($file->getExtension());
 
@@ -221,8 +221,16 @@ function container(array $values = []): Container
         );
     };
 
-    $container['server'] = function () {
-        return 'Berti\server';
+    $container['server'] = function () use ($container) {
+        return Partial\bind(
+            'Berti\server',
+            $container['document.collector'],
+            $container['document.processor'],
+            $container['asset.collector'],
+            $container['asset.processor'],
+            $container['mime_type.detector'],
+            $container['output.directory_index']
+        );
     };
 
     $container['console.commands'] = function () use ($container) {
