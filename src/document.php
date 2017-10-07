@@ -75,10 +75,10 @@ function document_processor(
 ): string
 {
     $content = $markdownRenderer(
+        $document->input->getContents(),
         $document,
         $documentCollection,
-        $assetCollection,
-        $document->input->getContents()
+        $assetCollection
     );
 
     $context = [

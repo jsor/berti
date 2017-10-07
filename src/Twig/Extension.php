@@ -35,10 +35,10 @@ class Extension extends \Twig_Extension
     public function markdown(array $twigContext, string $content): string
     {
         return ($this->markdownRenderer)(
+            $content,
             $twigContext['berti']['document'],
             $twigContext['berti']['documents'],
-            $twigContext['berti']['assets'],
-            $content
+            $twigContext['berti']['assets']
         );
     }
 }

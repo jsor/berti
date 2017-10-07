@@ -72,12 +72,27 @@ function container(array $values = []): Container
 
         return $client;
     };
+    $container['github.markdown.filter'] = function () use ($container) {
+        return function ($repository, $html, $document, $documentCollection, $assetCollection) use ($container) {
+            $html = github_anchor_rewriter($html);
+            $html = github_relative_to_absolute_link_rewriter(
+                $container['github.url_generator'],
+                $repository,
+                $html,
+                $document,
+                $documentCollection,
+                $assetCollection
+            );
+
+            return $html;
+        };
+    };
     $container['github.markdown.renderer'] = function () use ($container) {
         return Partial\bind(
             'Berti\github_markdown_renderer',
             $container['github.client'],
             $container['github.repository_detector'],
-            $container['github.url_generator']
+            $container['github.markdown.filter']
         );
     };
 

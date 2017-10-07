@@ -8,11 +8,11 @@ use Symfony\Component\Process\Process;
 function github_markdown_renderer(
     Github\Client $client,
     callable $repositoryDetector,
-    callable $urlGenerator,
+    callable $markdownFilter,
+    string $content,
     Document $document,
     array $documentCollection,
-    array $assetCollection,
-    string $content
+    array $assetCollection
 ): string
 {
     $repository = $repositoryDetector(dirname($document->input->getRealPath())) ?: null;
@@ -23,7 +23,20 @@ function github_markdown_renderer(
         $repository
     );
 
-    $html = strtr(
+    return $markdownFilter(
+        $repository,
+        $html,
+        $document,
+        $documentCollection,
+        $assetCollection
+    );
+}
+
+function github_anchor_rewriter(
+    string $html
+): string
+{
+    return strtr(
         $html,
         [
             'href="#user-content-' => 'href="#',
@@ -31,26 +44,15 @@ function github_markdown_renderer(
             'id="user-content-' => 'id="'
         ]
     );
-
-    $html = github_relative_to_absolute_link_converter(
-        $urlGenerator,
-        $document,
-        $documentCollection,
-        $assetCollection,
-        $repository,
-        $html
-    );
-
-    return $html;
 }
 
-function github_relative_to_absolute_link_converter(
+function github_relative_to_absolute_link_rewriter(
     callable $urlGenerator,
+    string $repository,
+    string $html,
     Document $document,
     array $documentCollection,
-    array $assetCollection,
-    string $repository,
-    string $html
+    array $assetCollection
 ): string
 {
     $map = [];
