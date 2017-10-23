@@ -116,7 +116,7 @@ function github_relative_to_absolute_link_rewriter(
             uri_canonicalizer(
                 $urlGenerator(
                     $repository,
-                    $matchedUrl,
+                    $url,
                     dirname($document->input->getRealPath())
                 )
             ),
