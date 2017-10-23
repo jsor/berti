@@ -115,6 +115,10 @@ function github_relative_to_absolute_link_rewriter(
             '/'
         );
 
+        if (false !== strpos($url, '?')) {
+            [$url] = explode('?', $url, 2);
+        }
+
         if (false !== strpos($url, '#')) {
             [$url] = explode('#', $url, 2);
         }
