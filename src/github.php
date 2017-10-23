@@ -83,6 +83,18 @@ function github_relative_to_absolute_link_rewriter(
             '/',
             $document->output->getRelativePathname()
         );
+
+        if ('index.html' === $doc->output->getBasename()) {
+            $dirName = dirname($doc->input->getRelativePathname());
+            $uri = uri_rewriter(
+                dirname($doc->output->getRelativePathname()),
+                '/',
+                $document->output->getRelativePathname()
+            );
+
+            $map[$dirName] = $uri;
+            $map[$dirName . '/'] = $uri;
+        }
     }
 
     $callback = function ($matches) use ($urlGenerator, $repository, $document, $map) {
