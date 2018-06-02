@@ -27,9 +27,7 @@ class ServerCommand extends Command
                     'build-dir',
                     InputArgument::REQUIRED,
                     'Path to the build directory'
-                )
-            ])
-            ->setDefinition([
+                ),
                 new InputArgument('address', InputArgument::OPTIONAL, 'Address:port', '127.0.0.1:8000')
             ])
             ->setDescription('Runs PHP\'s built-in web server')
