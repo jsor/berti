@@ -6,8 +6,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use React\EventLoop\Factory;
-use React\EventLoop\LoopInterface;
-use React\Filesystem\Filesystem;
 use React\Http\Response;
 use React\Http\Server as HttpServer;
 use React\Socket\Server as SocketServer;
@@ -31,7 +29,6 @@ function server(
     $loop = Factory::create();
 
     $server = new HttpServer(function (ServerRequestInterface $request) use (
-        $loop,
         $documentCollector,
         $documentProcessor,
         $assetCollector,
@@ -49,13 +46,11 @@ function server(
 
         if ($srcFile->isFile()) {
             $response = file(
-                $loop,
                 $mimeTypeDetector,
                 $srcFile
             );
         } elseif ($file->isFile()) {
             $response = file(
-                $loop,
                 $mimeTypeDetector,
                 $file
             );
@@ -102,7 +97,6 @@ function server(
 }
 
 function file(
-    LoopInterface $loop,
     callable $mimeTypeDetector,
     \SplFileInfo $file
 ): Response
