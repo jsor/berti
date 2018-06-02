@@ -24,7 +24,7 @@ function server(
     string $buildDir,
     OutputInterface $output,
     string $address = '127.0.0.1:8000'
-): int
+): void
 {
     $loop = Factory::create();
 
