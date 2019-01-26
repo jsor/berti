@@ -26,7 +26,6 @@
         "knplabs/github-api": "^2.0",
         "twig/twig": "^2.0",
         "react/partial": "^2.0",
-        "henrikbjorn/lurker": "^1.0",
         "symfony/process": "^3.2 || ^4.0",
         "react/http": "^0.7.4"
     },
