@@ -129,7 +129,7 @@ function document_template_selector(
 function document_title_extractor(string $content): string
 {
     $dom = new \DOMDocument();
-    $success = $dom->loadHTML($content);
+    $success = $dom->loadHTML($content, LIBXML_NOWARNING | LIBXML_NOERROR);
 
     if (!$success) {
         return '';
